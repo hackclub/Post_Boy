@@ -1,0 +1,141 @@
+.logo-main {
+    width: 25vw;
+}
+
+.label-stickers {
+    border-radius: 50px;
+    background-color: dodgerblue;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-mc-stickers {
+    border-radius: 50px;
+    background-color: grey;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-grant {
+    border-radius: 50px;
+    background-color: white;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-not-shipped {
+    border-radius: 50px;
+    background-color: #e42d40;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-shipped {
+    border-radius: 50px;
+    background-color: sandybrown;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-arrived {
+    border-radius: 50px;
+    background-color: forestgreen;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+
+* {
+    font-family: 'Kulim Park', sans-serif;
+}
+
+.card-red {
+    background-color: #e42d40;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.card-blue {
+    background-color: dodgerblue;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.card-img{
+    width: auto;
+    height: auto;
+    max-width: 200px;
+    border-radius: 10px;
+}
+
+.card-yellow {
+    background-color: sandybrown;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.center-viewport {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+}
+
+.button-red {
+    background-color: #e42d40;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 50px;
+    font-weight: bold;
+}
+
+.button-green{
+    background-color: forestgreen;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 50px;
+    font-weight: bold;
+}
+
+.font-large{
+    font-size: 30px;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration: none;
+}
