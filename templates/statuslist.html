@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Kulim+Park&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container py-5 text-center">
+    <img src="img/logo.svg" class="logo-main">
+    <br><br>
+    <h1 class="font-weight-bold">Hi, {{ name }}. You have {{ len }} packages.</h1>
+</div>
+
+<div class="container">
+    {% if packages %}
+    {% for package in packages %}
+    <div class="row py-3">
+        <div class="col">
+            <div class="card-red">
+                <h2 class="text-white">Package {{ package.package}}</h2>
+                <p>
+                    {% for label in package.labels%}
+                    <span class="label-{{ label }} px-4">{{ label }}</span>
+                    {% endfor %}
+                </p>
+                <br>
+                {% if package.contents %}
+                <h6 class="text-white font-weight-bold">
+                    Contents
+                </h6>
+                <p class="text-white">
+                    {{ package.contents }}
+                </p>
+                {% endif %}
+                <img src="{{ package.img }}" class="card-img">
+            </div>
+        </div>
+        <div class="col">
+            <div class="card-blue">
+                <h2 class="text-white">Status</h2>
+                <div class="row">
+                    <div class="col-form-label-sm px-2">
+                        <span class="label-{{ package.status }} px-4">
+                            {% if package.status == "NS" %}
+                            Not Shipped
+                            {% elif package.status == "S" %}
+                            Shipped
+                            {% elif package.status == "A" %}
+                            Arrived
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+                <br>
+                <h6 class="text-white font-weight-bold">
+                    Node Master
+                </h6>
+                <p class="text-white">
+                    {{ package.node_master }}
+                </p>
+                {% if package.date_shipped != "NS" %}
+                <h6 class="text-white font-weight-bold">
+                    Date Shipped
+                </h6>
+                <p class="text-white">
+                    {{ package.date_shipped }}
+                </p>
+                {% endif %}
+                {% if package.date_shipped != "NA" %}
+                <h6 class="text-white font-weight-bold">
+                    Date Arrived
+                </h6>
+                <p class="text-white">
+                    {{ package.date_arrived }}
+                </p>
+                {% endif %}
+                {% if package.notes %}
+                <h6 class="text-white font-weight-bold">
+                    Notes
+                </h6>
+                <p class="text-white">
+                    {{ package.notes }}
+                </p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col">
+            <div class="card-yellow">
+                <h2 class="text-white">Has this package arrived yet?</h2>
+                <div class="row">
+                    <div class="col">
+                        <a href="statuslist.html" class="button-green">Yes</a>
+                    </div>
+                    <div class="col">
+                        <a href="statuslist.html" class="button-red">No</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    {% endif %}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>
