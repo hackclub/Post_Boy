@@ -14,9 +14,9 @@
       "contents": "Minecraft stickers in a package.",
       "img": "https://github.com/FrankWhoee/Post_Boy/raw/master/img/mc-sticker-example.png",
       "status": "NS",
-      "node_master": "Orpheus",
+      "node_master": "UJ9864R4N",
       "tracking-num": -1,
-      "Notes": "Stickers couldn't fit in the box! Gonna try putting them in an envelope."
+      "note": "Stickers couldn't fit in the box! Gonna try putting them in an envelope."
     },
     {
       "package": 31,
@@ -29,9 +29,9 @@
       "contents": "Your GitHub grant and some stickers :D",
       "img": "https://github.com/FrankWhoee/Post_Boy/raw/master/img/grant-example.jpg",
       "status": "S",
-      "node_master": "Max Wofford",
+      "node_master": "UJ9864R4N",
       "tracking-num": 3813547635413,
-      "Notes": ""
+      "note": "yeet test1"
     },
     {
       "package": 19,
@@ -43,15 +43,14 @@
       "contents": "- Orpheus flag stickers\n- Hack Wars stickers\n- Tik Tok stickers",
       "img": "https://github.com/FrankWhoee/Post_Boy/raw/master/img/stickerbox-example.png",
       "status": "A",
-      "node_master": "Chris Walker",
+      "node_master": "UJ9864R4N",
       "tracking-num": 65476843217,
-      "Notes": ""
+      "note": ""
     }
   ],
-
   "UJ9864R4N": [
     {
-      "type": "nodemaster"
+      "type": "node_master"
     }
   ]
 }
