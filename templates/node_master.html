@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5 text-center">
+    <img src="img/logo.svg" class="logo-main">
+    <br><br>
+    <h1 class="font-weight-bold">Hi, <span style="color: #e42d40">Node Master</span> {{ name }}. You have {{ len }}
+        pending packages.</h1>
+    <br><br>
+    <div class="col">
+        <a href="/logout" class="button-red">Log out</a>
+    </div>
+</div>
+
+<div class="container">
+    {% if packages %}
+    {% for package in packages %}
+    <div class="row py-3">
+        <div class="col">
+            <div class="card-red">
+                <h2 class="text-white">Package #{{ package.package}}</h2>
+                <p>
+                    {% for label in package.labels%}
+                    <span class="label-{{ label }} px-4">{{ label }}</span>
+                    {% endfor %}
+                </p>
+                <br>
+                <h6 class="text-white font-weight-bold">
+                    Contents
+                </h6>
+                <div class="form-group">
+                    <form action="/update_contents">
+                        <textarea type="text" class="form-control"
+                                  id="contents{{ package.package }}" name="contents{{ package.package }}">{{ package.contents }}</textarea>
+                        <br>
+                        <input class="button-white" type="submit" value="Update Contents">
+                    </form>
+                </div>
+                <img src="{{ package.img }}" class="card-img">
+            </div>
+        </div>
+        <div class="col">
+            <div class="card-blue">
+                <h2 class="text-white">Status</h2>
+                <div class="row">
+                    <div class="col-form-label-sm px-2">
+                        <span class="label-{{ package.status }} px-4">
+                            {% if package.status == "NAP" %}
+                            Not Approved
+                            {% elif package.status == "PAP" %}
+                            Pending Approval
+                            {% elif package.status == "NS" %}
+                            Not Shipped
+                            {% elif package.status == "S" %}
+                            Shipped
+                            {% elif package.status == "A" %}
+                            Arrived
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+                <br>
+                <h6 class="text-white font-weight-bold">
+                    Recipient
+                </h6>
+                <p class="text-white">
+                    {{ package.recipient }}
+                </p>
+                {% if package.date_shipped != "NS" %}
+                <h6 class="text-white font-weight-bold">
+                    Date Shipped
+                </h6>
+                <p class="text-white">
+                    {{ package.date_shipped }}
+                </p>
+                {% endif %}
+                {% if package.date_shipped != "NA" %}
+                <h6 class="text-white font-weight-bold">
+                    Date Arrived
+                </h6>
+                <p class="text-white">
+                    {{ package.date_arrived }}
+                </p>
+                {% endif %}
+                <h6 class="text-white font-weight-bold">
+                    Note
+                </h6>
+                <div class="form-group">
+                    <form action="/update_note">
+                        <textarea type="text" class="form-control"
+                                  id="note{{ package.package }}" name="note{{ package.package }}">{{ package.note }}</textarea>
+                        <br>
+                        <input class="button-white" type="submit" value="Update Note">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card-yellow">
+                {% if package.status == "NAP" %}
+                <h2 class="text-white">Restore this package to pending stage?</h2>
+                <br>
+                <div class="row">
+                    <div class="col">
+                        <a href="/dedisapprove?package={{ package.package }}" class="button-green">Yes</a>
+                    </div>
+                    <div class="col">
+                        <a href="/delete?package={{ package.package }}" class="button-red">Delete</a>
+                    </div>
+                </div>
+                {% elif package.status == "PAP" %}
+                <h2 class="text-white">Approve this package?</h2>
+                <br>
+                <div class="row">
+                    <div class="col">
+                        <a href="/approve?package={{ package.package }}" class="button-green">Yes</a>
+                    </div>
+                    <div class="col">
+                        <a href="/disapprove?package={{ package.package }}" class="button-red">No</a>
+                    </div>
+                </div>
+                {% elif package.status == "NS" %}
+                <h2 class="text-white">Have you shipped this package yet?</h2>
+                <br>
+                <div class="row">
+                    <div class="col">
+                        <a href="/ship?package={{ package.package }}" class="button-green">Yes</a>
+                    </div>
+                    <div class="col">
+                        <a href="/deapprove?package={{ package.package }}" class="button-red">Deapprove</a>
+                    </div>
+                </div>
+                {% elif package.status == "S" %}
+                <h2 class="text-white">Package has been shipped!</h2>
+                <br>
+                <div class="row">
+                    <div class="col">
+                        <a href="/deship?package={{ package.package }}" class="button-red">It didn't ship</a>
+                    </div>
+                </div>
+                {% elif package.status == "A" %}
+                <h2 class="text-white">Package has arrived. Good job!</h2>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    {% endif %}
+</div>
+{% endblock %}
