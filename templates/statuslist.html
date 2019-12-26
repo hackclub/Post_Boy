@@ -55,11 +55,19 @@
                     </div>
                 </div>
                 <br>
+                {% if package.node_master or package.node_master != '' %}
                 <h6 class="text-white font-weight-bold">
                     Node Master
                 </h6>
                 <p class="text-white">
                     {{ package.node_master }}
+                </p>
+                {% endif %}
+                <h6 class="text-white font-weight-bold">
+                    Date Ordered
+                </h6>
+                <p class="text-white">
+                    {{ package.date_ordered }}
                 </p>
                 {% if package.date_shipped != "NS" %}
                 <h6 class="text-white font-weight-bold">
@@ -77,9 +85,17 @@
                     {{ package.date_arrived }}
                 </p>
                 {% endif %}
+                {% if package.tracking_num != -1 %}
+                <h6 class="text-white font-weight-bold">
+                    Tracking Number
+                </h6>
+                <p class="text-white">
+                    {{ package.tracking_num }}
+                </p>
+                {% endif %}
                 {% if package.note %}
                 <h6 class="text-white font-weight-bold">
-                    note
+                    Note
                 </h6>
                 <p class="text-white">
                     {{ package.note }}

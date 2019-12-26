@@ -11,12 +11,22 @@
     </div>
 </div>
 
+<div class="container text-center py-4">
+    <a href="/new">
+        <img src="img/add-icon.svg" style="width: 5vw">
+    </a>
+</div>
+
 <div class="container">
     {% if packages %}
     {% for package in packages %}
     <div class="row py-3">
         <div class="col">
             <div class="card-red">
+                <div class="px-4" style="padding: 10px; position: absolute; top: 0px; right: 0px;">
+                    <a href="/edit?package={{ package.package }}" class="button-white d-inline-block"><img
+                            src="img/edit-icon.svg" width="20px" alt=""></a>
+                </div>
                 <h2 class="text-white">Package #{{ package.package}}</h2>
                 <p>
                     {% for label in package.labels%}
@@ -24,17 +34,14 @@
                     {% endfor %}
                 </p>
                 <br>
+                {% if package.contents %}
                 <h6 class="text-white font-weight-bold">
                     Contents
                 </h6>
-                <div class="form-group">
-                    <form action="/update_contents">
-                        <textarea type="text" class="form-control"
-                                  id="contents{{ package.package }}" name="contents{{ package.package }}">{{ package.contents }}</textarea>
-                        <br>
-                        <input class="button-white" type="submit" value="Update Contents">
-                    </form>
-                </div>
+                <p class="text-white">
+                    {{ package.contents }}
+                </p>
+                {% endif %}
                 <img src="{{ package.img }}" class="card-img">
             </div>
         </div>
@@ -65,6 +72,20 @@
                 <p class="text-white">
                     {{ package.recipient }}
                 </p>
+                {% if not package.node_master or package.node_master == '' %}
+                <h6 class="text-white font-weight-bold">
+                   Node Master
+                </h6>
+                <p class="text-white">
+                    No Node Master. Approve this package to claim it.
+                </p>
+                {% endif %}
+                <h6 class="text-white font-weight-bold">
+                    Date Ordered
+                </h6>
+                <p class="text-white">
+                    {{ package.date_ordered }}
+                </p>
                 {% if package.date_shipped != "NS" %}
                 <h6 class="text-white font-weight-bold">
                     Date Shipped
@@ -81,17 +102,22 @@
                     {{ package.date_arrived }}
                 </p>
                 {% endif %}
+                {% if package.tracking_num != -1 %}
+                <h6 class="text-white font-weight-bold">
+                    Tracking Number
+                </h6>
+                <p class="text-white">
+                    {{ package.tracking_num }}
+                </p>
+                {% endif %}
+                {% if package.note %}
                 <h6 class="text-white font-weight-bold">
                     Note
                 </h6>
-                <div class="form-group">
-                    <form action="/update_note">
-                        <textarea type="text" class="form-control"
-                                  id="note{{ package.package }}" name="note{{ package.package }}">{{ package.note }}</textarea>
-                        <br>
-                        <input class="button-white" type="submit" value="Update Note">
-                    </form>
-                </div>
+                <p class="text-white">
+                    {{ package.note }}
+                </p>
+                {% endif %}
             </div>
         </div>
         <div class="col">
