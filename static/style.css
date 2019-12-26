@@ -122,11 +122,16 @@
     font-weight: bold;
 }
 
+.form-control{
+    border-radius: 5px;
+    border: none;
+}
+
 .button-white {
     background-color: white;
     border: none;
     color: black;
-    padding: 15px 32px;
+    padding: 15px 25px;
     text-align: center;
     text-decoration: none;
     text-transform: none;
@@ -183,4 +188,15 @@ a:hover {
 
 a:active {
     text-decoration: none;
+}
+
+.add-dot {
+    background-color: rgba(0,0,0,0);
+    color: #e42d40;
+    -moz-border-radius: 50px/50px;
+    -webkit-border-radius: 50px 50px;
+    border-radius: 50px/50px;
+    border: 21px solid #e42d40;
+    width: 100px;
+    height: 100px;
 }
