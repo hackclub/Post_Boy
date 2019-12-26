@@ -3,7 +3,7 @@
 <div class="container py-5 text-center">
     <img src="img/logo.svg" class="logo-main">
     <br><br>
-    <h1 class="font-weight-bold">Hi, <span style="color: #e42d40">Node Master</span> {{ name }}.</h1>
+    <h1 class="font-weight-bold">Hi, {{ name }}.</h1>
     <h1 class="font-weight-bold">You are currently editing package <span
             style="color: #e42d40">#{{ package.package }}</span>.</h1>
     <br><br>
@@ -24,19 +24,14 @@
                         <span class="label-{{ label }} px-4">{{ label }}</span>
                         {% endfor %}
                     </p>
-
-                    {{ form.labels }}
-
                     <br><br>
                     <h6 class="text-white font-weight-bold">
                         Contents
                     </h6>
                     <p class="text-white">
-                       {{ form.contents(class="form-control")}}
+                       {{ package.contents }}
                     </p>
                     <img src="{{ package.img }}" class="card-img">
-                    <br><br>
-                    {{ form.img(style="width: 100%") }}
                 </div>
                 <div class="col">
                     <h2 class="text-white">Status</h2>
@@ -57,19 +52,15 @@
                         </span>
                         </div>
                     </div>
-                    <br>
-                    <h6 class="text-white font-weight-bold">
-                        Recipient
-                    </h6>
-                    <p class="text-white">
-                        {{ package.recipient.name }}<br>
-                        {{ form.recipient(class="form-control")}}
-                    </p>
                     <h6 class="text-white font-weight-bold">
                         Address
                     </h6>
                     <p class="text-white">
+                        {% if can_edit %}
                         {{ form.address }}
+                        {% else %}
+                        {{ package.address }}
+                        {% endif %}
                     </p>
                     <h6 class="text-white font-weight-bold">
                         Date Ordered
@@ -93,13 +84,13 @@
                         Tracking Number
                     </h6>
                     <p class="text-white">
-                        {{ form.tracking(class="form-control") }}
+                        {{ package.tracking_num }}
                     </p>
                     <h6 class="text-white font-weight-bold">
                         Note
                     </h6>
                     <p class="text-white">
-                        {{ form.note(class="form-control")}}
+                        {{ package.note }}
                     </p>
                     <br>
                     <br>
@@ -116,10 +107,4 @@
         </div>
     </form>
 </div>
-<script>
-    let mySelect = new vanillaSelectBox("#labels");
-
-
-</script>
-
 {% endblock %}

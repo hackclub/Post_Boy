@@ -26,6 +26,11 @@ class updaterForm(FlaskForm):
     recipient = StringField('Recipient')
     tracking = StringField('tracking')
     img = StringField('picture')
+    address = StringField('address')
+    submit = SubmitField('Submit')
+
+class recipientForm(FlaskForm):
+    address = StringField('address')
     submit = SubmitField('Submit')
 
 
@@ -360,50 +365,73 @@ def deship_package():
 
 @app.route('/edit', methods=['GET', 'POST'])
 def update_contents():
-    if 'id' in session and database[session['id']][0]['type'] == "node_master":
+    if 'id' in session:
         package_id = int(request.args['package'])
         package = find_package(package_id)
         temp_package = package.copy()
         recipient_id = package['recipient']['id']
         temp_package['recipient'] = {'name': getNameFromId(recipient_id),
                                      'id': recipient_id}
-        form = updaterForm()
-        if form.validate_on_submit():
-            print("Form validated. Submitting...")
-            if (form.recipient.data != recipient_id):
-                temp_package['contents'] = form.contents.data
-                temp_package['note'] = form.note.data
-                temp_package['tracking_num'] = int(form.tracking.data)
-                temp_package['labels'] = form.labels.data
-                temp_package['img'] = form.img.data
-                temp_package['recipient']['id'] = form.recipient.data
-                temp_package['recipient']['name'] = getNameFromId(form.recipient.data)
-                if form.recipient.data in database:
-                    database[form.recipient.data].append(temp_package)
+        if database[session['id']][0]['type'] == "node_master":
+            form = updaterForm()
+            if form.validate_on_submit():
+                if form.recipient.data != recipient_id:
+                    temp_package['contents'] = form.contents.data
+                    temp_package['note'] = form.note.data
+                    temp_package['tracking_num'] = int(form.tracking.data)
+                    temp_package['labels'] = form.labels.data
+                    temp_package['img'] = form.img.data
+                    temp_package['address'] = form.address.data
+                    temp_package['recipient']['id'] = form.recipient.data
+                    temp_package['recipient']['name'] = getNameFromId(form.recipient.data)
+                    if form.recipient.data in database:
+                        database[form.recipient.data].append(temp_package)
+                    else:
+                        database[form.recipient.data] = [{"type": "receiver"}, temp_package]
+                    database[recipient_id].remove(package)
                 else:
-                    database[form.recipient.data] = [{"type": "receiver"}, temp_package]
-                database[recipient_id].remove(package)
+                    package['contents'] = form.contents.data
+                    package['note'] = form.note.data
+                    package['tracking_num'] = int(form.tracking.data)
+                    package['address'] = form.address.data
+                    package['labels'] = form.labels.data
+                    package['img'] = form.img.data
+                with open('database.json', 'w') as outfile:
+                    json.dump(database, outfile)
+                return redirect('/user')
             else:
-                package['contents'] = form.contents.data
-                package['note'] = form.note.data
-                package['tracking_num'] = int(form.tracking.data)
-                package['labels'] = form.labels.data
-                package['img'] = form.img.data
-                print(package['labels'])
-            with open('database.json', 'w') as outfile:
-                json.dump(database, outfile)
-            return redirect('/user')
+                form = updaterForm(
+                    recipient=u'' + temp_package['recipient']['id'],
+                    contents=u'' + temp_package['contents'],
+                    note=u'' + temp_package['note'],
+                    tracking=u'' + str(temp_package['tracking_num']),
+                    address=u'' + str(temp_package['address']),
+                    img=u'' + temp_package['img']
+                )
+            return render_template("master_edit.html", package=temp_package, name=session['name'], form=form)
         else:
-            print("Invalid form.")
-            print(form.errors)
-            form = updaterForm(
-                recipient=u'' + temp_package['recipient']['id'],
-                contents=u'' + temp_package['contents'],
-                note=u'' + temp_package['note'],
-                tracking=u'' + str(temp_package['tracking_num']),
-                img=u'' + temp_package['img']
-            )
-        return render_template("master_edit.html", package=temp_package, name=session['name'], form=form)
+            if package['recipient']['id'] == session['id']:
+                form = recipientForm()
+                can_edit = package['status'] == 'NS' or package['status'] == 'PAP'
+                print(package['status'])
+                if form.validate_on_submit():
+                    if can_edit:
+                        package['address'] = form.address.data
+                        with open('database.json', 'w') as outfile:
+                            json.dump(database, outfile)
+                        return redirect('/user')
+                else:
+                    form = updaterForm(
+                        recipient=u'' + temp_package['recipient']['id'],
+                        contents=u'' + temp_package['contents'],
+                        note=u'' + temp_package['note'],
+                        tracking=u'' + str(temp_package['tracking_num']),
+                        address=u'' + str(temp_package['address']),
+                        img=u'' + temp_package['img']
+                    )
+                return render_template("recipient_edit.html", package=temp_package, name=session['name'], form=form, can_edit=can_edit)
+            else:
+                return redirect("/user")
     return index()
 
 

@@ -16,6 +16,12 @@
     <div class="row py-3">
         <div class="col">
             <div class="card-red">
+                {% if package.status == 'NS' or package.status == 'PAP' %}
+                <div class="px-4" style="padding: 10px; position: absolute; top: 0px; right: 0px;">
+                    <a href="/edit?package={{ package.package }}" class="button-white d-inline-block"><img
+                            src="img/edit-icon.svg" width="20px" alt=""></a>
+                </div>
+                {% endif %}
                 <h2 class="text-white">Package #{{ package.package}}</h2>
                 <p>
                     {% for label in package.labels%}
@@ -63,6 +69,12 @@
                     {{ package.node_master }}
                 </p>
                 {% endif %}
+                <h6 class="text-white font-weight-bold">
+                    Address
+                </h6>
+                <p class="text-white">
+                    {{ package.address }}
+                </p>
                 <h6 class="text-white font-weight-bold">
                     Date Ordered
                 </h6>
