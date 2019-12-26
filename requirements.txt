@@ -4,3 +4,4 @@ requests
 PyYaml
 slackclient
 python-dotenv
+flask-wtf
