@@ -1,11 +1,17 @@
 import requests
 import json
+import yaml
+env = yaml.load(open('.env', 'r'))
+
+airtable_key = env['airtable-key']
+
+auth_header = {
+        'Authorization': 'Bearer ' + airtable_key,
+    }
 
 def getPackages(slack_id, is_node_master=False):
 
-    headers = {
-        'Authorization': 'Bearer keyFhr2H97lfZLkqF',
-    }
+    headers = auth_header
 
     params = (
         ('view', 'Everything'),
@@ -27,9 +33,7 @@ def getPackages(slack_id, is_node_master=False):
     return convertRequestToPackages(response)
 
 def getAddress(record_id):
-    headers = {
-        'Authorization': 'Bearer keyFhr2H97lfZLkqF',
-    }
+    headers = auth_header
 
     response= json.loads(requests.get('https://api.airtable.com/v0/apptEEFG5HTfGQE7h/Addresses/' + record_id,
                         headers=headers).content)['fields']
@@ -38,18 +42,14 @@ def getAddress(record_id):
 
 
 def getContents(record_id):
-    headers = {
-        'Authorization': 'Bearer keyFhr2H97lfZLkqF',
-    }
+    headers = auth_header
 
     response = json.loads(requests.get('https://api.airtable.com/v0/apptEEFG5HTfGQE7h/Mail%20Scenarios/' + record_id,
                         headers=headers).content)['fields']
     return response['Contents']
 
 def is_node_master(slack_id):
-    headers = {
-        'Authorization': 'Bearer keyFhr2H97lfZLkqF',
-    }
+    headers = auth_header
 
     params = (
         ('view', 'Grid view'),
