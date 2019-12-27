@@ -29,6 +29,7 @@ class updaterForm(FlaskForm):
     address = StringField('address')
     submit = SubmitField('Submit')
 
+
 class recipientForm(FlaskForm):
     address = StringField('address')
     submit = SubmitField('Submit')
@@ -84,37 +85,13 @@ def move_completed_packages_down(packages: list):
             packages.remove(package)
             packages.append(package)
 
+def save_db():
+    with open('database.json','w') as outfile:
+        json.dump(database, outfile)
 
-@app.route('/new')
-def create_package():
-    if 'id' in session:
-        if isNodeMaster(session['id']):
-            database[session['id']].append(
-                {
-                    "package": states['last_package_id'] + 1,
-                    "labels": [],
-                    "date_ordered": int(time.time()),
-                    "date_shipped": "NS",
-                    "date_arrived": "NA",
-                    "contents": "",
-                    "img": "",
-                    "status": "PAP",
-                    "node_master": session['id'],
-                    "tracking_num": "-1",
-                    "note": "",
-                    "recipient": {
-                        "name": session['name'],
-                        "id": session['id']
-                    }
-                }
-            )
-            states['last_package_id'] += 1
-            with open('states.json', 'w') as outfile:
-                json.dump(states, outfile)
-            with open('database.json', 'w') as outfile:
-                json.dump(database, outfile)
-            return redirect("/edit?package=" + str(states['last_package_id']))
-
+def save_state():
+    with open('states.json','w') as outfile:
+        json.dump(states, outfile)
 
 @app.route('/user', methods=["GET", "POST"])
 def user():
@@ -136,6 +113,10 @@ def user():
         user_name = info['user']['name']
         session['id'] = user_slack_id
         session['name'] = user_name
+        print(type(user_slack_id))
+        if session['id'] not in database:
+            database[session['id']] = [{"type": "receiver"}]
+            save_db()
     else:
         user_slack_id = session['id']
         user_name = session['name']
@@ -163,7 +144,7 @@ def user():
                     temp_package['date_arrived'] = "Not arrived."
                 if package['status'] is not 'A':
                     num_of_packages += 1
-                if 'node_master' in package:
+                if 'node_master' in package and package['node_master'] != '':
                     temp_package['node_master'] = getNameFromId(package['node_master'])
                 packages.append(temp_package)
         packages.sort(key=sort_by_date_ordered)
@@ -173,12 +154,16 @@ def user():
                 package['date_ordered']).strftime(
                 '%Y-%m-%d %H:%M:%S') + " UTC"
     else:
-        return "User not in database."
+        if session['id'] not in database:
+            database[session['id']] = [{"type": "receiver"}]
+            save_db()
     if isNode_Master:
         for user in database:
             for package in database[user]:
                 temp_package = package.copy()
-                if 'type' not in package.keys() and (package['node_master'] == session['id'] or 'node_master' not in package or package['node_master'] == ''):
+                if 'type' not in package.keys() and (
+                        package['node_master'] == session['id'] or 'node_master' not in package or package[
+                    'node_master'] == ''):
                     if package['date_shipped'] != "NS":
                         temp_package['date_shipped'] = datetime.datetime.utcfromtimestamp(
                             package['date_shipped']).strftime(
@@ -229,8 +214,7 @@ def confirm_package():
         if 'package' in package and package['package'] == package_id and package['status'] == 'S':
             package['status'] = 'A'
             package['date_arrived'] = int(time.time())
-            with open('database.json', 'w') as outfile:
-                json.dump(database, outfile)
+            save_db()
         return redirect("/user")
     return index()
 
@@ -245,8 +229,7 @@ def deconfirm_package():
         if 'package' in package and package['package'] == package_id and package['status'] == 'S':
             package['status'] = 'S'
             package['date_arrived'] = 'NA'
-            with open('database.json', 'w') as outfile:
-                json.dump(database, outfile)
+            save_db()
         return redirect("/user")
     return index()
 
@@ -261,8 +244,7 @@ def delete_package():
         user_id = package['recipient']['id']
         if 'package' in package and package['package'] == package_id and package['status'] == 'NAP':
             database[user_id].remove(package)
-            with open('database.json', 'w') as outfile:
-                json.dump(database, outfile)
+            save_db()
         return redirect("/user")
     return index()
 
@@ -274,11 +256,11 @@ def approve_package():
         package = find_package(package_id)
         if package == -1:
             return redirect("/user")
-        if 'package' in package and package['package'] == package_id and package['status'] == 'PAP' and package['recipient']['id'] != session['id']:
+        if 'package' in package and package['package'] == package_id and package['status'] == 'PAP' and \
+                package['recipient']['id'] != session['id']:
             package['status'] = 'NS'
             package['node_master'] = session['id']
-            with open('database.json', 'w') as outfile:
-                json.dump(database, outfile)
+            save_db()
         return redirect("/user")
     return index()
 
@@ -293,8 +275,7 @@ def deapprove_package():
         if 'package' in package and package['package'] == package_id and package['status'] == 'NS':
             package['status'] = 'PAP'
             package['node_master'] = ''
-            with open('database.json', 'w') as outfile:
-                json.dump(database, outfile)
+            save_db()
         return redirect("/user")
     return index()
 
@@ -309,8 +290,7 @@ def disapprove_package():
         if 'package' in package and package['package'] == package_id and package['status'] == 'PAP':
             package['status'] = 'NAP'
             package['node_master'] = session['id']
-            with open('database.json', 'w') as outfile:
-                json.dump(database, outfile)
+            save_db()
         return redirect("/user")
     return index()
 
@@ -325,8 +305,7 @@ def dedisapprove_package():
         if 'package' in package and package['package'] == package_id and package['status'] == 'NAP':
             package['status'] = 'PAP'
             package['node_master'] = ''
-            with open('database.json', 'w') as outfile:
-                json.dump(database, outfile)
+            save_db()
         return redirect("/user")
     return index()
 
@@ -341,8 +320,7 @@ def ship_package():
         if 'package' in package and package['package'] == package_id and package['status'] == 'NS':
             package['status'] = 'S'
             package['date_shipped'] = int(time.time())
-            with open('database.json', 'w') as outfile:
-                json.dump(database, outfile)
+            save_db()
         return redirect("/user")
     return index()
 
@@ -357,19 +335,60 @@ def deship_package():
         if 'package' in package and package['package'] == package_id and package['status'] == 'S':
             package['status'] = 'NS'
             package['date_shipped'] = 'NS'
-            with open('database.json', 'w') as outfile:
-                json.dump(database, outfile)
+            save_db()
         return redirect("/user")
     return index()
+
+
+@app.route('/new')
+def create_package():
+    if 'id' in session:
+        if isNodeMaster(session['id']):
+            new_package = {
+                "package": states['last_package_id'] + 1,
+                "labels": [],
+                "date_ordered": int(time.time()),
+                "date_shipped": "NS",
+                "date_arrived": "NA",
+                "contents": "",
+                "img": "",
+                "address": "",
+                "status": "PAP",
+                "node_master": session['id'],
+                "tracking_num": "-1",
+                "note": "",
+                "recipient": {
+                    "name": session['name'],
+                    "id": session['id']
+                }
+            }
+        else:
+            new_package = states['templates'][request.args['type']]
+            new_package['package'] = states['last_package_id'] + 1
+            new_package["date_ordered"] = int(time.time())
+            new_package['recipient']['id'] = session['id']
+            new_package['recipient']['name'] = session['name']
+
+        database[session['id']].append(new_package)
+        states['last_package_id'] += 1
+        save_state()
+        save_db()
+        return redirect("/edit?package=" + str(states['last_package_id']) + "&new=true")
 
 
 @app.route('/edit', methods=['GET', 'POST'])
 def update_contents():
     if 'id' in session:
         package_id = int(request.args['package'])
+        is_new_package = 'new' in request.args and request.args['new'] == 'true'
         package = find_package(package_id)
         temp_package = package.copy()
         recipient_id = package['recipient']['id']
+        if 'cancel' in request.args and request.args['cancel'] == 'true':
+            if 'new' in request.args and request.args['new'] == 'True':
+                database[recipient_id].remove(package)
+                save_db()
+            return redirect("/user")
         temp_package['recipient'] = {'name': getNameFromId(recipient_id),
                                      'id': recipient_id}
         if database[session['id']][0]['type'] == "node_master":
@@ -396,8 +415,7 @@ def update_contents():
                     package['address'] = form.address.data
                     package['labels'] = form.labels.data
                     package['img'] = form.img.data
-                with open('database.json', 'w') as outfile:
-                    json.dump(database, outfile)
+                save_db()
                 return redirect('/user')
             else:
                 form = updaterForm(
@@ -408,7 +426,8 @@ def update_contents():
                     address=u'' + str(temp_package['address']),
                     img=u'' + temp_package['img']
                 )
-            return render_template("master_edit.html", package=temp_package, name=session['name'], form=form)
+            return render_template("master_edit.html", package=temp_package, name=session['name'], form=form,
+                                   is_new_package=is_new_package)
         else:
             if package['recipient']['id'] == session['id']:
                 form = recipientForm()
@@ -417,8 +436,7 @@ def update_contents():
                 if form.validate_on_submit():
                     if can_edit:
                         package['address'] = form.address.data
-                        with open('database.json', 'w') as outfile:
-                            json.dump(database, outfile)
+                        save_db()
                         return redirect('/user')
                 else:
                     form = updaterForm(
@@ -429,7 +447,8 @@ def update_contents():
                         address=u'' + str(temp_package['address']),
                         img=u'' + temp_package['img']
                     )
-                return render_template("recipient_edit.html", package=temp_package, name=session['name'], form=form, can_edit=can_edit)
+                return render_template("recipient_edit.html", package=temp_package, name=session['name'], form=form,
+                                       can_edit=can_edit)
             else:
                 return redirect("/user")
     return index()
@@ -451,6 +470,7 @@ def find_package(id, user=None):
 
 def isNodeMaster(id):
     return database[id][0]['type'] == 'node_master'
+
 
 def getNameFromId(id):
     client = slack.WebClient(token=auth_token)
