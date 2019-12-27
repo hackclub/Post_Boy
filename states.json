@@ -1,1 +1,58 @@
-{"labels": ["Stickers", "Minecraft", "Grant"], "status": {"PAP": "Pending Approval", "NAP": "Not Approved", "NS": "Not Shipped", "S": "Shipped", "A": "Arrived"}, "last_package_id": 15, "templates": {"Stickers": {"package": 14, "labels": ["Stickers"], "address": "", "date_ordered": 1577394538, "date_shipped": "NS", "date_arrived": "NA", "contents": "A box of random stickers.", "img": "", "status": "PAP", "node_master": "", "tracking_num": -1, "note": "", "recipient": {"name": "Frank Hui", "id": "UJ9864R4N"}}, "Minecraft": {"package": 15, "labels": ["Stickers", "Minecraft"], "address": "", "date_ordered": 1577394653, "date_shipped": "NS", "date_arrived": "NA", "contents": "An envelope of Minecraft-themed Hack Club stickers.", "img": "", "status": "PAP", "node_master": "", "tracking_num": -1, "note": "", "recipient": {"name": "Frank Hui", "id": "UJ9864R4N"}}}}
+{
+  "labels": [
+    "Stickers",
+    "Minecraft",
+    "Grant"
+  ],
+  "status": {
+    "PAP": "Pending Approval",
+    "NAP": "Not Approved",
+    "NS": "Not Shipped",
+    "S": "Shipped",
+    "A": "Arrived"
+  },
+  "last_package_id": 15,
+  "templates": {
+    "Stickers": {
+      "package": 14,
+      "labels": [
+        "Stickers"
+      ],
+      "address": "",
+      "date_ordered": 1577394538,
+      "date_shipped": "NS",
+      "date_arrived": "NA",
+      "contents": "A box of random stickers.",
+      "img": "",
+      "status": "PAP",
+      "node_master": "",
+      "tracking_num": -1,
+      "note": "",
+      "recipient": {
+        "name": "Frank Hui",
+        "id": "UJ9864R4N"
+      }
+    },
+    "Minecraft": {
+      "package": 15,
+      "labels": [
+        "Stickers",
+        "Minecraft"
+      ],
+      "address": "",
+      "date_ordered": 1577394653,
+      "date_shipped": "NS",
+      "date_arrived": "NA",
+      "contents": "An envelope of Minecraft-themed Hack Club stickers.",
+      "img": "",
+      "status": "PAP",
+      "node_master": "",
+      "tracking_num": -1,
+      "note": "",
+      "recipient": {
+        "name": "Frank Hui",
+        "id": "UJ9864R4N"
+      }
+    }
+  }
+}

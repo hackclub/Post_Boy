@@ -2,9 +2,71 @@
     width: 25vw;
 }
 
-.label-Stickers {
+.label-Custom {
+    border-radius: 50px;
+    background-color: black;
+    color: white;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-Sticker {
     border-radius: 50px;
     background-color: dodgerblue;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-Box {
+    border-radius: 50px;
+    background-color: saddlebrown;
+    color: white;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-Envelope {
+    border-radius: 50px;
+    background-color: mediumpurple;
+    color: white;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-Big {
+    border-radius: 50px;
+    background-color: sandybrown;
+    color: white;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-Bulk {
+    border-radius: 50px;
+    background-color: darkred;
+    color: white;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-Starter-Kit {
+    border-radius: 50px;
+    background-color: forestgreen;
+    color: white;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-New-Semester-Grant {
+    border-radius: 50px;
+    background-color: white;
     padding: 5px;
     display: inline;
     width: max-content;
@@ -18,7 +80,7 @@
     width: max-content;
 }
 
-.label-Grant {
+.label-New-Club-Grant {
     border-radius: 50px;
     background-color: white;
     padding: 5px;

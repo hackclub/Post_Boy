@@ -3,7 +3,11 @@
 <div class="container py-5 text-center">
     <img src="img/logo.svg" class="logo-main">
     <br><br>
+    {% if len == 1 %}
+    <h1 class="font-weight-bold">Hi, {{ name }}. You have {{ len }} pending package.</h1>
+    {% else %}
     <h1 class="font-weight-bold">Hi, {{ name }}. You have {{ len }} pending packages.</h1>
+    {% endif %}
     <br><br>
     <div class="col">
         <a href="/logout" class="button-red">Log out</a>
@@ -20,33 +24,74 @@
             <div class="col py-3" style=" height: 50vh">
                 <div class="card-red-outline" style="height: 100%">
                     <div class="row row-center-vertical" style="height: 33%">
-                        <h2 class="text-red">Sticker Package</h2>
+                        <h2 class="text-red font-weight-bold">Sticker Box</h2>
                     </div>
                     <div class="row row-center-vertical" style="height: 33%">
                         <img class="py-2" src="img/sticker-box-icon.svg" style="height: 100%">
                     </div>
                     <div class="row row-center-vertical" style="height: 33%">
-                        <a href="/new?type=Stickers" class="button-red" style="">Request</a>
+                        <h5 class="text-red">/promo Sticker Box</h5>
                     </div>
                 </div>
             </div>
             <div class="col py-3" style="height: 50vh">
                 <div class="card-red-outline" style="height: 100%">
                     <div class="row row-center-vertical" style="height: 33%">
-                        <h2 class="text-red">Minecraft Sticker Package</h2>
+                        <h2 class="text-red font-weight-bold">GitHub Grant</h2>
                     </div>
                     <div class="row row-center-vertical" style="height: 33%">
                         <img class="py-2" src="img/envelope.svg" style="height: 100%">
                     </div>
                     <div class="row row-center-vertical" style="height: 33%">
-                        <a href="/new?type=Minecraft" class="button-red" style="">Request</a>
+                        <h5 class="text-red">/promo GitHub Grant</h5>
                     </div>
                 </div>
             </div>
             <div class="col py-3" style="height: 50vh">
                 <div class="card-red-outline" style="height: 100%">
                     <div class="row row-center-vertical" style="height: 33%">
-                        <h2 class="text-red">Coming Soon</h2>
+                        <h2 class="text-red font-weight-bold">Notion Premium account</h2>
+                    </div>
+                    <div class="row row-center-vertical" style="height: 33%">
+                        <img class="py-2" src="img/notion-logo.svg" style="height: 100%">
+                    </div>
+                    <div class="row row-center-vertical" style="height: 33%">
+                        <h5 class="text-red">/promo Notion Premium account</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col py-3" style=" height: 50vh">
+                <div class="card-red-outline" style="height: 100%">
+                    <div class="row row-center-vertical" style="height: 33%">
+                        <h2 class="text-red font-weight-bold">StickerMule Credit</h2>
+                    </div>
+                    <div class="row row-center-vertical" style="height: 33%">
+                        <img class="py-2" src="img/stickermule-logo.svg" style="height: 100%">
+                    </div>
+                    <div class="row row-center-vertical" style="height: 33%">
+                        <h5 class="text-red">/promo StickerMule credit</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col py-3" style="height: 50vh">
+                <div class="card-red-outline" style="height: 100%">
+                    <div class="row row-center-vertical" style="height: 33%">
+                        <h2 class="text-red font-weight-bold">Hack Pack</h2>
+                    </div>
+                    <div class="row row-center-vertical" style="height: 33%">
+                        <img class="py-2" src="img/hack-pack-icon.svg" style="height: 100%">
+                    </div>
+                    <div class="row row-center-vertical" style="height: 33%">
+                        <h5 class="text-red">/promo Hack Pack</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col py-3" style="height: 50vh">
+                <div class="card-red-outline" style="height: 100%">
+                    <div class="row row-center-vertical" style="height: 33%">
+                        <h2 class="text-red font-weight-bold">???</h2>
                     </div>
                     <div class="row row-center-vertical" style="height: 33%">
                         <img class="py-2" src="img/question-mark.svg" style="height: 100%">
@@ -56,7 +101,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -74,8 +118,8 @@
                 {% endif %}
                 <h2 class="text-white" style="padding-right: 40%">Package #{{ package.package}}</h2>
                 <p>
-                    {% for label in package.labels%}
-                    <span class="label-{{ label }} px-4">{{ label }}</span>
+                    {% for label, class in package.labels %}
+                    <span class="label-{{ class }} px-4">{{ label }}</span>
                     {% endfor %}
                 </p>
                 <br>
@@ -84,7 +128,9 @@
                     Contents
                 </h6>
                 <p class="text-white">
+                    {% autoescape false %}
                     {{ package.contents }}
+                    {% endautoescape %}
                 </p>
                 {% endif %}
                 <img src="{{ package.img }}" class="card-img">
@@ -131,23 +177,7 @@
                 <p class="text-white">
                     {{ package.date_ordered }}
                 </p>
-                {% if package.date_shipped != "NS" %}
-                <h6 class="text-white font-weight-bold">
-                    Date Shipped
-                </h6>
-                <p class="text-white">
-                    {{ package.date_shipped }}
-                </p>
-                {% endif %}
-                {% if package.date_shipped != "NA" %}
-                <h6 class="text-white font-weight-bold">
-                    Date Arrived
-                </h6>
-                <p class="text-white">
-                    {{ package.date_arrived }}
-                </p>
-                {% endif %}
-                {% if package.tracking_num != -1 %}
+                {% if package.tracking_num != '' %}
                 <h6 class="text-white font-weight-bold">
                     Tracking Number
                 </h6>
@@ -160,7 +190,9 @@
                     Note
                 </h6>
                 <p class="text-white">
+                    {% autoescape false %}
                     {{ package.note }}
+                    {% endautoescape %}
                 </p>
                 {% endif %}
             </div>
@@ -169,33 +201,20 @@
             <div class="card-yellow">
                 {% if package.status == "NS" %}
                 <h2 class="text-white">Waiting for your package to ship...</h2>
+                <div class="col">
+                    <a href="{{ package.address_change }}" class="button-red">Change your address</a>
+                </div>
                 {% elif package.status == "PAP" %}
                 <h2 class="text-white">Waiting for your package to be approved...</h2>
-                <br>
-                <div class="row">
-                    <div class="col">
-                        <a href="/delete?package={{ package.package }}" class="button-red">Delete Package</a>
-                    </div>
+                <div class="col">
+                    <a href="{{ package.address_change }}" target="_blank" class="button-red">Change your address</a>
                 </div>
                 {% elif package.status == "NAP" %}
                 <h2 class="text-white">Sorry, your package was not approved. :(</h2>
                 {% elif package.status == "S" %}
-                <h2 class="text-white">Has this package arrived yet?</h2>
-                <br>
-                <div class="row">
-                    <div class="col">
-                        <a href="/confirm?package={{ package.package }}" class="button-green">Yes</a>
-                    </div>
-                </div>
+                <h2 class="text-white">Your package has been shipped!</h2>
                 {% elif package.status == "A" %}
                 <h2 class="text-white">We hope you enjoy your package! :)</h2>
-                <br>
-                <div class="row">
-                    <div class="col">
-                        <a href="/deconfirm?package={{ package.package }}" class="button-red">It didn't actually
-                            arrive</a>
-                    </div>
-                </div>
                 {% endif %}
             </div>
         </div>
