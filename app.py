@@ -134,6 +134,8 @@ def user():
                 else:
                     label_tuple.append((label,label.replace(" ", "-")))
         package['labels'] = label_tuple
+        package['date_ordered'] = datetime.datetime.strptime(package['date_ordered'],'%Y-%m-%dT%H:%M:%S.%fZ').strftime("%b. %d, %Y")
+
 
     return render_template("statuslist.html", packages=packages, name=session['name'], len=num_of_packages)
 

@@ -110,12 +110,6 @@
     <div class="row py-3">
         <div class="col py-3">
             <div class="card-red">
-                {% if package.status == 'NS' or package.status == 'PAP' %}
-                <div class="px-4" style="padding: 10px; position: absolute; top: 20px; right: 0px;">
-                    <a href="/edit?package={{ package.package }}" class="button-white d-inline-block"><img
-                            src="img/edit-icon.svg" width="20px" alt=""></a>
-                </div>
-                {% endif %}
                 <h2 class="text-white" style="padding-right: 40%">Package #{{ package.package}}</h2>
                 <p>
                     {% for label, class in package.labels %}
