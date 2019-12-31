@@ -2,22 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>post_boy</title>
+    <meta name="slack-app-id" content="AS3DSU4DV">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="icon" href="img/icon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Kulim+Park&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="static/vanillaSelectBox.css">
+    <script src="js/vanillaSelectBox.js"></script>
 </head>
 <body>
-<div class="container py-5 text-center">
-    <img src="img/logo.svg" class="logo-main">
-</div>
-
-<div class="container text-center center-viewport">
-    <a href="statuslist.html" class="button-red font-large"><img src="img/Slack_Mark.svg" style="height: 50px; padding-right: 10px">Slack Login</a>
-</div>
-
+<div id="content">{% block content %}{% endblock %}</div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
@@ -27,5 +24,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </body>
 </html>

@@ -1,0 +1,317 @@
+.logo-main {
+    width: 25vw;
+}
+
+.label-Custom {
+    border-radius: 50px;
+    background-color: black;
+    color: white;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-Sticker {
+    border-radius: 50px;
+    background-color: dodgerblue;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-Box {
+    border-radius: 50px;
+    background-color: saddlebrown;
+    color: white;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-Envelope {
+    border-radius: 50px;
+    background-color: mediumpurple;
+    color: white;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-Big {
+    border-radius: 50px;
+    background-color: sandybrown;
+    color: white;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-Bulk {
+    border-radius: 50px;
+    background-color: darkred;
+    color: white;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-Starter-Kit {
+    border-radius: 50px;
+    background-color: forestgreen;
+    color: white;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-New-Semester-Grant {
+    border-radius: 50px;
+    background-color: white;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-Minecraft {
+    border-radius: 50px;
+    background-color: grey;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-New-Club-Grant {
+    border-radius: 50px;
+    background-color: white;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-NAP {
+    border-radius: 50px;
+    background-color: #e42d40;
+
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-PAP {
+    border-radius: 50px;
+    background-color: white;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-NS {
+    border-radius: 50px;
+    background-color: grey;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-S {
+    border-radius: 50px;
+    background-color: sandybrown;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+.label-A {
+    border-radius: 50px;
+    background-color: forestgreen;
+    padding: 5px;
+    display: inline;
+    width: max-content;
+}
+
+
+* {
+    font-family: 'Kulim Park', sans-serif;
+}
+
+.card-red {
+    background-color: #e42d40;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.card-red-outline {
+    border: solid #e42d40;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.text-red {
+    color: #e42d40;
+}
+
+.card-blue {
+    background-color: dodgerblue;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.card-img{
+    width: auto;
+    height: auto;
+    max-width: 200px;
+    border-radius: 10px;
+}
+
+.card-yellow {
+    background-color: sandybrown;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.center-viewport {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+}
+
+.row-center-vertical{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.col-width-equal-flex{
+    flex-basis: 0;
+    flex-shrink:0;
+}
+
+.button-red {
+    background-color: #e42d40;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none;
+    display: inline-block;
+    border-radius: 50px;
+    font-weight: bold;
+}
+
+.button-blue {
+    background-color: dodgerblue;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none;
+    display: inline-block;
+    border-radius: 50px;
+    font-weight: bold;
+}
+
+.button-light-blue {
+    background-color: #80c1ff;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none;
+    display: inline-block;
+    border-radius: 50px;
+    font-weight: bold;
+}
+
+
+.form-control{
+    border-radius: 5px;
+    border: none;
+}
+
+.button-white {
+    background-color: white;
+    border: none;
+    color: black;
+    padding: 15px 25px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 50px;
+    font-weight: bold;
+}
+
+.button-black {
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 50px;
+    font-weight: bold;
+}
+
+.button-green{
+    background-color: forestgreen;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 50px;
+    font-weight: bold;
+}
+
+.font-large{
+    font-size: 30px;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration: none;
+}
+
+.add-dot {
+    background-color: rgba(0,0,0,0);
+    color: #e42d40;
+    -moz-border-radius: 50px/50px;
+    -webkit-border-radius: 50px 50px;
+    border-radius: 50px/50px;
+    border: 21px solid #e42d40;
+    width: 100px;
+    height: 100px;
+}
+
+hr{
+    border: 1px solid lightgray;
+    border-radius: 20px;
+}
