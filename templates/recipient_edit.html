@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5 text-center">
+    <img src="img/logo.svg" class="logo-main">
+    <br><br>
+    <h1 class="font-weight-bold">Hi, {{ name }}.</h1>
+    <h1 class="font-weight-bold">You are currently editing package <span
+            style="color: #e42d40">#{{ package.package }}</span>.</h1>
+    <br><br>
+    <div class="col">
+        <a href="/logout" class="button-red">Log out</a>
+    </div>
+</div>
+
+<div class="container py-lg-5">
+    <form action="" method="post" novalidate>
+        {{ form.csrf_token }}
+        <div class="card-red px-5">
+            <div class="row">
+                <div class="col">
+                    <h2 class="text-white">Package #{{ package.package}}</h2>
+                    <p>
+                        {% for label in package.labels%}
+                        <span class="label-{{ label }} px-4">{{ label }}</span>
+                        {% endfor %}
+                    </p>
+                    <br><br>
+                    <h6 class="text-white font-weight-bold">
+                        Contents
+                    </h6>
+                    <p class="text-white">
+                       {{ package.contents }}
+                    </p>
+                    <img src="{{ package.img }}" class="card-img">
+                </div>
+                <div class="col">
+                    <h2 class="text-white">Status</h2>
+                    <div class="row">
+                        <div class="col-form-label-sm px-2">
+                        <span class="label-{{ package.status }} px-4">
+                            {% if package.status == "NAP" %}
+                            Not Approved
+                            {% elif package.status == "PAP" %}
+                            Pending Approval
+                            {% elif package.status == "NS" %}
+                            Not Shipped
+                            {% elif package.status == "S" %}
+                            Shipped
+                            {% elif package.status == "A" %}
+                            Arrived
+                            {% endif %}
+                        </span>
+                        </div>
+                    </div>
+                    <h6 class="text-white font-weight-bold">
+                        Address
+                    </h6>
+                    <p class="text-white">
+                        {% if can_edit %}
+                        {{ form.address }}
+                        {% else %}
+                        {{ package.address }}
+                        {% endif %}
+                    </p>
+                    <h6 class="text-white font-weight-bold">
+                        Date Ordered
+                    </h6>
+                    <p class="text-white">
+                        {{ package.date_ordered }}
+                    </p>
+                    <h6 class="text-white font-weight-bold">
+                        Date Shipped
+                    </h6>
+                    <p class="text-white">
+                        {{ package.date_shipped }}
+                    </p>
+                    <h6 class="text-white font-weight-bold">
+                        Date Arrived
+                    </h6>
+                    <p class="text-white">
+                        {{ package.date_arrived }}
+                    </p>
+                    <h6 class="text-white font-weight-bold">
+                        Tracking Number
+                    </h6>
+                    <p class="text-white">
+                        {{ package.tracking_num }}
+                    </p>
+                    <h6 class="text-white font-weight-bold">
+                        Note
+                    </h6>
+                    <p class="text-white">
+                        {{ package.note }}
+                    </p>
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="col">
+                            {{ form.submit(class="button-white") }}
+                        </div>
+                        <div class="col">
+                            <a href="/user" class="button-black">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

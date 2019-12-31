@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5 text-center">
+    <img src="img/logo.svg" class="logo-main">
+    <br><br>
+    <h1 class="font-weight-bold">Hi, <span style="color: #e42d40">Node Master</span> {{ name }}.</h1>
+    <h1 class="font-weight-bold">You are currently editing package <span
+            style="color: #e42d40">#{{ package.package }}</span>.</h1>
+    <br><br>
+    <div class="col">
+        <a href="/logout" class="button-red">Log out</a>
+    </div>
+</div>
+
+<div class="container py-lg-5">
+    <form action="" method="post" novalidate>
+        {{ form.csrf_token }}
+        <div class="card-red px-5">
+            <div class="row">
+                <div class="col">
+                    <h2 class="text-white">Package #{{ package.package}}</h2>
+                    <p>
+                        {% for label in package.labels%}
+                        <span class="label-{{ label }} px-4">{{ label }}</span>
+                        {% endfor %}
+                    </p>
+
+                    {{ form.labels }}
+
+                    <br><br>
+                    <h6 class="text-white font-weight-bold">
+                        Contents
+                    </h6>
+                    <p class="text-white">
+                       {{ form.contents(class="form-control")}}
+                    </p>
+                    <img src="{{ package.img }}" class="card-img">
+                    <br><br>
+                    {{ form.img(style="width: 100%") }}
+                </div>
+                <div class="col">
+                    <h2 class="text-white">Status</h2>
+                    <div class="row">
+                        <div class="col-form-label-sm px-2">
+                        <span class="label-{{ package.status }} px-4">
+                            {% if package.status == "NAP" %}
+                            Not Approved
+                            {% elif package.status == "PAP" %}
+                            Pending Approval
+                            {% elif package.status == "NS" %}
+                            Not Shipped
+                            {% elif package.status == "S" %}
+                            Shipped
+                            {% elif package.status == "A" %}
+                            Arrived
+                            {% endif %}
+                        </span>
+                        </div>
+                    </div>
+                    <br>
+                    <h6 class="text-white font-weight-bold">
+                        Recipient
+                    </h6>
+                    <p class="text-white">
+                        {{ package.recipient.name }}<br>
+                        {{ form.recipient(class="form-control")}}
+                    </p>
+                    <h6 class="text-white font-weight-bold">
+                        Address
+                    </h6>
+                    <p class="text-white">
+                        {{ form.address }}
+                    </p>
+                    <h6 class="text-white font-weight-bold">
+                        Date Ordered
+                    </h6>
+                    <p class="text-white">
+                        {{ package.date_ordered }}
+                    </p>
+                    <h6 class="text-white font-weight-bold">
+                        Date Shipped
+                    </h6>
+                    <p class="text-white">
+                        {{ package.date_shipped }}
+                    </p>
+                    <h6 class="text-white font-weight-bold">
+                        Date Arrived
+                    </h6>
+                    <p class="text-white">
+                        {{ package.date_arrived }}
+                    </p>
+                    <h6 class="text-white font-weight-bold">
+                        Tracking Number
+                    </h6>
+                    <p class="text-white">
+                        {{ form.tracking(class="form-control") }}
+                    </p>
+                    <h6 class="text-white font-weight-bold">
+                        Note
+                    </h6>
+                    <p class="text-white">
+                        {{ form.note(class="form-control")}}
+                    </p>
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="col">
+                            {{ form.submit(class="button-white") }}
+                        </div>
+                        <div class="col">
+                            <a href="/edit?cancel=true&new={{ is_new_package }}&package={{ package.package }}" class="button-black">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    let mySelect = new vanillaSelectBox("#labels");
+
+
+</script>
+
+{% endblock %}
