@@ -1,10 +1,8 @@
 import requests
 import json
-import yaml
+import os
 
-env = yaml.load(open('.env', 'r'))
-
-airtable_key = env['airtable-key']
+airtable_key = os.getenv('AIRTABLE_KEY')
 
 auth_header = {
     'Authorization': 'Bearer ' + airtable_key,

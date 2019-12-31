@@ -2,7 +2,6 @@ import requests
 import os
 import json
 import slack
-import yaml
 import datetime
 from bs4 import BeautifulSoup
 import time
@@ -40,14 +39,12 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 app.secret_key = '\xf0"b1\x04\xe0.[?w\x0c(\x94\xcdh\xc1yq\xe3\xaf\xf2\x8f^\xdc'
-env = yaml.load(open('.env', 'r'))
 
-client_id = env['client-id']
-client_secret = env['client-secret']
+client_id = os.getenv('CLIENT_ID')
+client_secret = os.getenv('CLIENT_SECRET')
 
-auth_token = env['auth-token']
-airtable_key = env['airtable-key']
-
+auth_token = os.getenv('AUTH_TOKEN')
+airtable_key = os.getenv('AIRTABLE_KEY')
 
 @app.route("/")
 def index():
