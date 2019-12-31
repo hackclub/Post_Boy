@@ -19,7 +19,7 @@ def getPackages(slack_id, is_node_master=False):
          '{"view":"Everything",'
          '"filterByFormula":"\'<@' + slack_id + '>\' = {Receiver Message Tag}",'
                                                 '"fields":["Unique Index","Scenario Name","Receiver Address",'
-                                                '"Created Time","Scenario","Sender Message Tag","Tracking Number",'
+                                                '"Created Time","Scenario","Sender Message Tag","Tracking URL",'
                                                 '"Notes","Receiver Name","Receiver Message Tag","Status"]}'),
     )
 
@@ -71,7 +71,7 @@ def convertRequestToPackages(response):
         package['date_ordered'] = fields['Created Time']
         package['contents'] = getContents(fields['Scenario'][0])
         package['node_master'] = '' if 'Sender Message Tag' not in fields else fields['Sender Message Tag'][2:-1]
-        package['tracking_num'] = '' if 'Tracking Number' not in fields else fields['Tracking Number']
+        package['tracking_url'] = '' if 'Tracking URL' not in fields else fields['Tracking URL']
         package['note'] = '' if 'Notes' not in fields else fields['Notes']
         package['recipient'] = {"name": fields['Receiver Name'][0], "id": fields['Receiver Message Tag'][0][2:-1]}
         package['status'] = \

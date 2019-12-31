@@ -11,7 +11,7 @@ from flask import Flask, request, render_template, send_from_directory, session,
 from flask_wtf import FlaskForm
 from wtforms import SelectMultipleField, TextAreaField, SubmitField, StringField
 from wtforms.validators import DataRequired
-
+from os import environ
 
 class updaterForm(FlaskForm):
     labels = SelectMultipleField(u'Programming Language',
@@ -36,6 +36,9 @@ class recipientForm(FlaskForm):
 
 
 app = Flask(__name__)
+if __name__ == '__main__':
+    app.run(debug=True)
+
 app.secret_key = '\xf0"b1\x04\xe0.[?w\x0c(\x94\xcdh\xc1yq\xe3\xaf\xf2\x8f^\xdc'
 env = yaml.load(open('.env', 'r'))
 
@@ -78,7 +81,6 @@ def move_completed_packages_down(packages: list):
         if package['status'] == 'A' or package['status'] == 'NAP':
             packages.remove(package)
             packages.append(package)
-
 
 
 def login(auth_code):
