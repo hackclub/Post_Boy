@@ -20,8 +20,8 @@
                 <div class="col">
                     <h2 class="text-white">Package #{{ package.package}}</h2>
                     <p>
-                        {% for label in package.labels%}
-                        <span class="label-{{ label }} px-4">{{ label }}</span>
+                        {% for label, class in package.labels %}
+                        <span class="label-{{ class }} px-4">{{ label }}</span>
                         {% endfor %}
                     </p>
                     <br><br>
@@ -62,6 +62,8 @@
                         {{ package.address }}
                         {% endif %}
                     </p>
+                    <a href="{{ package.address_change }}" target="_blank" class="button-white">Change your address</a>
+                    <br><br>
                     <h6 class="text-white font-weight-bold">
                         Date Ordered
                     </h6>
@@ -69,28 +71,10 @@
                         {{ package.date_ordered }}
                     </p>
                     <h6 class="text-white font-weight-bold">
-                        Date Shipped
-                    </h6>
-                    <p class="text-white">
-                        {{ package.date_shipped }}
-                    </p>
-                    <h6 class="text-white font-weight-bold">
-                        Date Arrived
-                    </h6>
-                    <p class="text-white">
-                        {{ package.date_arrived }}
-                    </p>
-                    <h6 class="text-white font-weight-bold">
-                        Tracking Number
-                    </h6>
-                    <p class="text-white">
-                        {{ package.tracking_num }}
-                    </p>
-                    <h6 class="text-white font-weight-bold">
                         Note
                     </h6>
                     <p class="text-white">
-                        {{ package.note }}
+                        {{ form.note }}
                     </p>
                     <br>
                     <br>
