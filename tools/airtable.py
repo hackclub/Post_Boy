@@ -62,8 +62,8 @@ def is_node_master(slack_id):
         ('select', '{"filterByFormula":"\'<@' + slack_id + '>\' = {Slack ID}"}'),
     )
 
-    response = requests.get('https://api2.hackclub.com/v0/Operations/Mail%20Senders', headers=auth_header,
-                            params=params).content
+    response = json.loads(requests.get('https://api2.hackclub.com/v0/Operations/Mail%20Senders', headers=auth_header,
+                            params=params).content)
     return len(response) == 1
 
 
@@ -87,3 +87,15 @@ def convertRequestToPackages(response):
              '2 Assigned': 'NS', '1 Unassigned': 'PAP'}[fields['Status']]
         packages.append(package)
     return packages
+
+def isLeader(slack_id):
+    params = (
+        ('select', '{"filterByFormula":"\'' + slack_id + '\' = {Slack ID}"}'),
+    )
+
+    response = json.loads(requests.get('https://api2.hackclub.com/v0/Operations/People', headers=auth_header,
+                            params=params).content)
+    f = open("dev.log", "w")
+    f.write(json.dumps(response))
+    f.close()
+    return len(response) != 0 and len(response[0]['fields']['Clubs']) > 0
