@@ -12,6 +12,7 @@ from wtforms import SelectMultipleField, TextAreaField, SubmitField, StringField
 from wtforms.validators import DataRequired
 from os import environ
 
+
 class updaterForm(FlaskForm):
     labels = SelectMultipleField(u'Programming Language',
                                  choices=[
@@ -30,7 +31,7 @@ class updaterForm(FlaskForm):
 
 
 class recipientForm(FlaskForm):
-    address = StringField('address')
+    note = StringField('note')
     submit = SubmitField('Submit')
 
 
@@ -45,6 +46,7 @@ client_secret = os.getenv('CLIENT_SECRET')
 
 auth_token = os.getenv('AUTH_TOKEN')
 airtable_key = os.getenv('AIRTABLE_KEY')
+
 
 @app.route("/")
 def index():
@@ -79,6 +81,44 @@ def move_completed_packages_down(packages: list):
             packages.remove(package)
             packages.append(package)
 
+def convertLabelNameToArray(label:str):
+    label_array = []
+    if 'sticker' in label.lower():
+        # Append sticker label
+        label_array.append(("Sticker", "Sticker"))
+        if 'box' in label.lower():
+            label_array.append(("Box", "Box"))
+            # Append size label
+            label_array.append((label.replace("Sticker Box", ""), label.replace("Sticker Box", "")))
+        else:
+            label_array.append(("Envelope", "Envelope"))
+    else:
+        if 'minecraft' in label.lower():
+            label_array.append(("Envelope", "Envelope"))
+        else:
+            label_array.append((label, label.replace(" ", "-")))
+    return label_array
+
+@app.route('/edit', methods=['GET', 'POST'])
+def edit():
+    isNew = 'new' in request.args and request.args['new'] == 'true'
+    if isNew:
+        type = request.args['type'] if 'type' in request.args else ''
+        scenario = airtable.getMailScenario(type, slack_id=session['id'])
+        scenario['date_ordered'] = datetime.date.today().strftime("%b. %d, %Y")
+        scenario['status'] = 'PAP'
+        scenario['labels'] = convertLabelNameToArray(scenario['labels'])
+        form = recipientForm()
+        if form.validate_on_submit():
+                note = form.note.data
+                observer = slack.WebClient(token=auth_token)
+                observer.chat_postMessage(
+                    channel="GNTFDNEF8",
+                    text="<@UNRAW3K7F> test " + type + " <@" + session['id'] + "> " + note
+                )
+                return redirect('/user')
+        return render_template("recipient_edit.html", package=scenario, name=session['name'], form=form)
+
 
 def login(auth_code):
     # An empty string is a valid token for this request
@@ -93,8 +133,6 @@ def login(auth_code):
     user_name = info['user']['name']
     session['id'] = user_slack_id
     session['name'] = user_name
-
-
 
 @app.route('/user', methods=["GET", "POST"])
 def user():
@@ -112,29 +150,13 @@ def user():
     move_completed_packages_down(packages)
     for package in packages:
         package['node_master'] = getNameFromId(package['node_master'])
-        package['note'] = package['note'].replace("\n","<br>")
+        package['note'] = package['note'].replace("\n", "<br>")
         package['contents'] = package['contents'].replace("\n", "<br>")
         if package['status'] != 'A' and package['status'] != 'NAP':
             num_of_packages += 1
-        label_tuple = []
-        for label in package['labels']:
-            if 'sticker' in label.lower():
-                # Append sticker label
-                label_tuple.append(("Sticker", "Sticker"))
-                if 'box' in label.lower():
-                    label_tuple.append(("Box", "Box"))
-                    # Append size label
-                    label_tuple.append((label.replace("Sticker Box", ""),label.replace("Sticker Box", "")))
-                else:
-                    label_tuple.append(("Envelope", "Envelope"))
-            else:
-                if 'minecraft' in label.lower():
-                    label_tuple.append(("Envelope", "Envelope"))
-                else:
-                    label_tuple.append((label,label.replace(" ", "-")))
-        package['labels'] = label_tuple
-        package['date_ordered'] = datetime.datetime.strptime(package['date_ordered'],'%Y-%m-%dT%H:%M:%S.%fZ').strftime("%b. %d, %Y")
-
+        package['labels'] = convertLabelNameToArray(package['labels'])
+        package['date_ordered'] = datetime.datetime.strptime(package['date_ordered'], '%Y-%m-%dT%H:%M:%S.%fZ').strftime(
+            "%b. %d, %Y")
 
     return render_template("statuslist.html", packages=packages, name=session['name'], len=num_of_packages)
 
@@ -145,9 +167,10 @@ def logout():
     del session['name']
     return redirect("/")
 
+
 def getNameFromId(id):
-    client = slack.WebClient(token=auth_token)
+    observer = slack.WebClient(token=auth_token)
     try:
-        return client.users_info(user=id)['user']['real_name']
+        return observer.users_info(user=id)['user']['real_name']
     except:
         return "No Node Master found."
