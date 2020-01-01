@@ -103,6 +103,8 @@ def convertLabelNameToArray(label:str):
 def edit():
     isNew = 'new' in request.args and request.args['new'] == 'true'
     if isNew:
+        if not airtable.isLeader(session['id']):
+            return redirect('/user')
         type = request.args['type'] if 'type' in request.args else ''
         scenario = airtable.getMailScenario(type, slack_id=session['id'])
         scenario['date_ordered'] = datetime.date.today().strftime("%b. %d, %Y")
@@ -160,7 +162,7 @@ def user():
         package['date_ordered'] = datetime.datetime.strptime(package['date_ordered'], '%Y-%m-%dT%H:%M:%S.%fZ').strftime(
             "%b. %d, %Y")
 
-    return render_template("statuslist.html", packages=packages, name=session['name'], len=num_of_packages)
+    return render_template("statuslist.html", packages=packages, name=session['name'], len=num_of_packages, isLeader=airtable.isLeader(session['id']))
 
 
 @app.route('/logout')
