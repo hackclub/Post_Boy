@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>post_boy</title>
+    <title>Hack Club | post_boy</title>
     <meta name="slack-app-id" content="AS3DSU4DV">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
     <link rel="icon" href="img/icon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Kulim+Park&display=swap" rel="stylesheet">
@@ -17,13 +19,15 @@
 <div id="content">{% block content %}{% endblock %}</div>
 <div class="container text-center py-3">
     <p style="font-weight: bold">
-        Made with 🖤 by @frank <img href="frankwhoee.codes" src="img/spacelogo.png" style="height: 2vh;border-radius: 3px">
+        Made with 🖤 by @frank <img href="frankwhoee.codes" src="img/spacelogo.png"
+                                    style="height: 2vh;border-radius: 3px">
     </p>
     <p>
         Having problems with post_boy? <br><br>
         <a class="button-red" href="https://hackclub.slack.com/archives/DJ98650F8">Ask Frank</a>
     </p>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
@@ -33,6 +37,10 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 </body>
 </html>
