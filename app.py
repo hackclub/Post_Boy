@@ -148,7 +148,11 @@ def user():
             return redirect('/user')
     packages = []
     num_of_packages = 0
-    is_nm = airtable.is_node_master(session['id'])
+    type = ''
+    if airtable.is_node_master(session['id']):
+        type= 'Node Master'
+    elif airtable.isLeader(session['id']):
+        type = 'Club Leader'
     packages = airtable.getPackages(session['id'])
     packages.sort(key=sort_by_date_ordered)
     move_completed_packages_down(packages)
@@ -162,7 +166,7 @@ def user():
         package['date_ordered'] = datetime.datetime.strptime(package['date_ordered'], '%Y-%m-%dT%H:%M:%S.%fZ').strftime(
             "%b. %d, %Y")
 
-    return render_template("statuslist.html", packages=packages, name=session['name'], len=num_of_packages, isLeader=airtable.isLeader(session['id']))
+    return render_template("statuslist.html", packages=packages, name=session['name'], len=num_of_packages, type=type)
 
 
 @app.route('/logout')
