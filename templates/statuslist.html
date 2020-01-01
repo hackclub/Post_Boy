@@ -29,9 +29,18 @@
                     <div class="row row-center-vertical" style="height: 33%">
                         <img class="py-2" src="img/sticker-box-icon.svg" style="height: 100%">
                     </div>
+                    {% if isLeader %}
                     <div class="row row-center-vertical" style="height: 33%">
                         <a href="/edit?type=sticker_box&new=true" class="button-red" style="">Request</a>
                     </div>
+                    {% else %}
+                    <div class="row row-center-vertical" style="height: 33%">
+                        <div class="text-center px-4" data-toggle="tooltip"
+                             title="Only available for leaders.">
+                            <a href="" class="button-red btn disabled" style="">Request</a>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
             <div class="col py-3" style="height: 50vh">
@@ -95,7 +104,7 @@
             <div class="col py-3" style="height: 50vh">
                 <div class="card-red-outline" style="height: 100%">
                     <div class="row row-center-vertical" style="height: 33%">
-                        <h2 class="text-red font-weight-bold">???</h2>
+                        <h3 class="text-red font-weight-bold">Character Not Unlocked</h3>
                     </div>
                     <div class="row row-center-vertical" style="height: 33%">
                         <img class="py-2" src="img/question-mark.svg" style="height: 100%">
