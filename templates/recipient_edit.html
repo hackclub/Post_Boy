@@ -4,8 +4,7 @@
     <img src="img/logo.svg" class="logo-main">
     <br><br>
     <h1 class="font-weight-bold">Hi, {{ name }}.</h1>
-    <h1 class="font-weight-bold">You are currently editing package <span
-            style="color: #e42d40">#{{ package.package }}</span>.</h1>
+    <h1 class="font-weight-bold">You are currently requesting for a <span style="color: #e42d40">{{ package.type }}</span>.</h1>
     <br><br>
     <div class="col">
         <a href="/logout" class="button-red">Log out</a>
@@ -52,6 +51,7 @@
                         </span>
                         </div>
                     </div>
+                    <br>
                     <h6 class="text-white font-weight-bold">
                         Address
                     </h6>
@@ -76,13 +76,11 @@
                     <p class="text-white">
                         {{ form.note }}
                     </p>
-                    <br>
-                    <br>
                     <div class="row">
-                        <div class="col">
+                        <div class="col py-2">
                             {{ form.submit(class="button-white") }}
                         </div>
-                        <div class="col">
+                        <div class="col py-2">
                             <a href="/user" class="button-black">Cancel</a>
                         </div>
                     </div>
