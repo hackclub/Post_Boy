@@ -2,6 +2,7 @@ import requests
 import json
 import os
 import time
+
 airtable_key = os.getenv('AIRTABLE_KEY')
 
 auth_header = {
@@ -19,10 +20,12 @@ def getPackages(slack_id, is_node_master=False):
                                                 '"Notes","Receiver Name","Receiver Message Tag","Status"]}'),
     )
 
-    response = requests.get("https://api2.hackclub.com/v0/Operations/Mail%20Missions", headers=auth_header, params=params)
+    response = requests.get("https://api2.hackclub.com/v0/Operations/Mail%20Missions", headers=auth_header,
+                            params=params)
     return convertRequestToPackages(response)
 
-def getMailScenario(name,slack_id=None):
+
+def getMailScenario(name, slack_id=None):
     response = json.loads(requests.get(
         'http://api2.hackclub.com/v0/Operations/Mail%20Scenarios?select={"maxRecords":1,"filterByFormula":"\'' + name + '\' = {ID}"}',
         headers=auth_header).content)[0]['fields']
@@ -31,8 +34,9 @@ def getMailScenario(name,slack_id=None):
     scenario['contents'] = response['Contents']
     scenario['labels'] = response['Name']
     if slack_id:
-        scenario['address'], scenario['address_change'] = getAddress(slack_id,idType='slack_id')
+        scenario['address'], scenario['address_change'] = getAddress(slack_id, idType='slack_id')
     return scenario
+
 
 def getAddress(id, idType="record_id"):
     if idType == 'record_id':
@@ -50,6 +54,8 @@ def getAddress(id, idType="record_id"):
         f.close()
 
         return (response['Formatted Address'], response['Update Form URL'])
+
+
 def getContents(record_id):
     response = json.loads(requests.get(
         'http://api2.hackclub.com/v0/Operations/Mail%20Scenarios?select={"maxRecords":1,"filterByFormula":"\'' + record_id + '\' = {Record ID}"}',
@@ -59,11 +65,11 @@ def getContents(record_id):
 
 def is_node_master(slack_id):
     params = (
-        ('select', '{"filterByFormula":"\'<@' + slack_id + '>\' = {Slack ID}"}'),
+        ('select', '{"filterByFormula":"\'' + slack_id + '\' = {Slack ID}"}'),
     )
 
     response = json.loads(requests.get('https://api2.hackclub.com/v0/Operations/Mail%20Senders', headers=auth_header,
-                            params=params).content)
+                                       params=params).content)
     return len(response) == 1
 
 
@@ -88,14 +94,12 @@ def convertRequestToPackages(response):
         packages.append(package)
     return packages
 
+
 def isLeader(slack_id):
     params = (
         ('select', '{"filterByFormula":"\'' + slack_id + '\' = {Slack ID}"}'),
     )
 
     response = json.loads(requests.get('https://api2.hackclub.com/v0/Operations/People', headers=auth_header,
-                            params=params).content)
-    f = open("dev.log", "w")
-    f.write(json.dumps(response))
-    f.close()
+                                       params=params).content)
     return len(response) != 0 and len(response[0]['fields']['Clubs']) > 0
