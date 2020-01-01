@@ -136,12 +136,13 @@ def login(auth_code):
 
 @app.route('/user', methods=["GET", "POST"])
 def user():
-    if 'id' not in session:
-        if 'code' not in request.args:
-            return redirect("/")
-        # Retrieve the auth code from the request params
-        auth_code = request.args['code']
-        login(auth_code)
+    if 'code' in request.args:
+        if 'id' in session:
+            return redirect('/user')
+        else:
+            auth_code = request.args['code']
+            login(auth_code)
+            return redirect('/user')
     packages = []
     num_of_packages = 0
     is_nm = airtable.is_node_master(session['id'])
