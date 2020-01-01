@@ -107,6 +107,7 @@ def edit():
         scenario = airtable.getMailScenario(type, slack_id=session['id'])
         scenario['date_ordered'] = datetime.date.today().strftime("%b. %d, %Y")
         scenario['status'] = 'PAP'
+        scenario['type'] = scenario['labels']
         scenario['labels'] = convertLabelNameToArray(scenario['labels'])
         form = recipientForm()
         if form.validate_on_submit():
