@@ -103,7 +103,7 @@ def convertLabelNameToArray(label:str):
 def edit():
     isNew = 'new' in request.args and request.args['new'] == 'true'
     if isNew:
-        if not airtable.isLeader(session['id']):
+        if not airtable.isLeader(session['id']) and not airtable.is_node_master(session['id']):
             return redirect('/user')
         type = request.args['type'] if 'type' in request.args else ''
         scenario = airtable.getMailScenario(type, slack_id=session['id'])
