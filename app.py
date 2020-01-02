@@ -158,7 +158,6 @@ def user():
     move_completed_packages_down(packages)
     for package in packages:
         package['node_master'] = getNameFromId(package['node_master'])
-        package['note'] = package['note'].replace("\n", "<br>")
         package['contents'] = package['contents'].replace("\n", "<br>")
         if package['status'] != 'A' and package['status'] != 'NAP':
             num_of_packages += 1

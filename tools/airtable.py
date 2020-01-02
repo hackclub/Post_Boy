@@ -89,7 +89,6 @@ def convertRequestToPackages(response):
         package['contents'] = getContents(fields['Scenario'][0])
         package['node_master'] = '' if 'Sender Message Tag' not in fields else fields['Sender Message Tag'][2:-1]
         package['tracking_url'] = '' if 'Tracking URL' not in fields else fields['Tracking URL']
-        package['note'] = '' if 'Notes' not in fields else fields['Notes']
         package['recipient'] = {"name": fields['Receiver Name'][0], "id": fields['Receiver Message Tag'][0][2:-1]}
         package['status'] = \
             {'10 Dropped': "NAP", '6 Delivered': 'A', '5 Shipped': 'S', '4 Shipped': 'S', '3 Purchased': 'NS',
