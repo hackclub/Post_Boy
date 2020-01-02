@@ -377,9 +377,15 @@ a:active {
     height: 100px;
 }
 
-hr {
+hr.day {
     border: 1px solid lightgray;
     background-color: lightgray;
+    border-radius: 20px;
+}
+
+hr.night {
+    border: 1px solid #2a2a2a;
+    background-color: #2a2a2a;
     border-radius: 20px;
 }
 
