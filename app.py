@@ -52,7 +52,10 @@ airtable_key = os.getenv('AIRTABLE_KEY')
 def index():
     setTheme(request.args)
     if 'id' not in session:
-        return render_template("index.html", dark='day')
+        if 'theme' not in session:
+            return render_template("index.html", dark='day')
+        else:
+            return render_template("index.html", dark=session['theme'])
     else:
         return redirect("/user")
 
