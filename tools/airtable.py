@@ -16,12 +16,15 @@ def getPackages(slack_id, is_node_master=False):
          '{"view":"Everything",'
          '"filterByFormula":"\'<@' + slack_id + '>\' = {Receiver Message Tag}",'
                                                 '"fields":["Unique Index","Scenario Name","Receiver Address",'
-                                                '"Created Time","Scenario","Sender Message Tag","Tracking URL",'
+                                                '"Created Time","Receiver Scan Time","Sender Scan Time","Scenario","Sender Message Tag","Tracking URL",'
                                                 '"Notes","Receiver Name","Receiver Message Tag","Status"]}'),
     )
 
     response = requests.get("https://api2.hackclub.com/v0/Operations/Mail%20Missions", headers=auth_header,
                             params=params)
+    f = open("dev.log", "w")
+    f.write(json.dumps(json.loads(response.content)))
+    f.close()
     return convertRequestToPackages(response)
 
 
@@ -49,9 +52,7 @@ def getAddress(id, idType="record_id"):
         response = json.loads(requests.get(
             'http://api2.hackclub.com/v0/Operations/Addresses?select={"maxRecords":1,"filterByFormula":"\'<@' + id + '>\' = {Sender Message Tag}"}',
             headers=auth_header).content)[0]['fields']
-        f = open("dev.log", "w")
-        f.write(json.dumps(response))
-        f.close()
+
 
         return (response['Formatted Address'], response['Update Form URL'])
 
@@ -83,6 +84,8 @@ def convertRequestToPackages(response):
         package['labels'] = fields['Scenario Name'][0]
         package['address'], package['address_change'] = getAddress(fields['Receiver Address'][0])
         package['date_ordered'] = fields['Created Time']
+        package['date_shipped'] = fields['Sender Scan Time'] if 'Sender Scan Time' in fields else ''
+        package['date_arrived'] = fields['Receiver Scan Time'] if 'Receiver Scan Time' in fields else ''
         package['contents'] = getContents(fields['Scenario'][0])
         package['node_master'] = '' if 'Sender Message Tag' not in fields else fields['Sender Message Tag'][2:-1]
         package['tracking_url'] = '' if 'Tracking URL' not in fields else fields['Tracking URL']

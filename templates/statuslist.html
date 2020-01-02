@@ -184,6 +184,22 @@
                 <p class="text-white">
                     {{ package.date_ordered }}
                 </p>
+                {% if package.date_shipped %}
+                <h6 class="text-white font-weight-bold">
+                    Date Shipped
+                </h6>
+                <p class="text-white">
+                    {{ package.date_shipped }}
+                </p>
+                {% endif %}
+                {% if package.date_arrived %}
+                <h6 class="text-white font-weight-bold">
+                    Date Arrived
+                </h6>
+                <p class="text-white">
+                    {{ package.date_arrived }}
+                </p>
+                {% endif %}
                 {% if package.note %}
                 <h6 class="text-white font-weight-bold">
                     Note

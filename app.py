@@ -163,11 +163,15 @@ def user():
         if package['status'] != 'A' and package['status'] != 'NAP':
             num_of_packages += 1
         package['labels'] = convertLabelNameToArray(package['labels'])
-        package['date_ordered'] = datetime.datetime.strptime(package['date_ordered'], '%Y-%m-%dT%H:%M:%S.%fZ').strftime(
-            "%b. %d, %Y")
+        package['date_ordered'] = convertToDateString(package['date_ordered'])
+        package['date_shipped'] = '' if package['date_shipped'] == '' else convertToDateString(package['date_shipped'])
+        package['date_arrived'] = '' if package['date_arrived'] == '' else convertToDateString(package['date_arrived'])
 
     return render_template("statuslist.html", packages=packages, name=session['name'], len=num_of_packages, type=type)
 
+def convertToDateString(date):
+    return datetime.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%fZ').strftime(
+        "%b. %d, %Y")
 
 @app.route('/logout')
 def logout():
