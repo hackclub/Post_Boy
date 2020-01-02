@@ -362,6 +362,10 @@ a:hover {
     text-decoration: none;
 }
 
+a light:hover {
+    text-decoration: none;
+}
+
 a:active {
     text-decoration: none;
 }
@@ -380,4 +384,15 @@ a:active {
 hr {
     border: 1px solid lightgray;
     border-radius: 20px;
+}
+
+.spin{
+    -webkit-transition-duration: 0.5s;
+    -moz-transition-duration: 0.5s;
+    -o-transition-duration: 0.5s;
+    transition-duration: 0.5s;
+    -webkit-transition-property: -webkit-transform;
+    -moz-transition-property: -moz-transform;
+    -o-transition-property: -o-transform;
+    transition-property: transform;
 }

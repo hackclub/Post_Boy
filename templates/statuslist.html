@@ -16,7 +16,7 @@
 <div class="container text-center py-4">
     <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
        aria-controls="collapseExample">
-        <img src="img/add-icon.svg" style="width: 5vw">
+        <img class="spin" src="img/add-icon.svg" style="width: 5vw">
     </a>
     <br>
     <div class="collapse py-4" id="collapseExample">
@@ -244,4 +244,13 @@
     {% else %}
     {% endif %}
 </div>
+<script>
+    $( ".spin" ).click(function() {
+        if (  $( this ).css( "transform" ) == 'none' ){
+            $(this).css("transform","rotate(90deg)");
+        } else {
+            $(this).css("transform","" );
+        }
+    });
+</script>
 {% endblock %}
