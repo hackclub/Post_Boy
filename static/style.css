@@ -1,7 +1,3 @@
-.logo-main {
-    width: 25vw;
-}
-
 .label-Custom {
     background-color: black;
     border: none;
@@ -383,10 +379,11 @@ a:active {
 
 hr {
     border: 1px solid lightgray;
+    background-color: lightgray;
     border-radius: 20px;
 }
 
-.spin{
+.spin {
     -webkit-transition-duration: 0.5s;
     -moz-transition-duration: 0.5s;
     -o-transition-duration: 0.5s;
@@ -407,8 +404,41 @@ body {
     width: 10px;
     background: transparent;
 }
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
     background: #e42d40;
     border-radius: 10px;
+}
+
+.hop {
+    width: 25px
+}
+
+body.day {
+    background: white;
+}
+
+body.night {
+    background: black;
+}
+
+.logo-main {
+    width: 25vw;
+}
+
+h1.day {
+    color: black;
+}
+
+h1.night {
+    color: white;
+}
+
+p.day {
+    color: black;
+}
+
+p.night {
+    color: white;
 }

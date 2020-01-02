@@ -15,14 +15,21 @@
     <link rel="stylesheet" href="static/vanillaSelectBox.css">
     <script src="js/vanillaSelectBox.js"></script>
 </head>
-<body>
+<body class="day">
 <div id="content">{% block content %}{% endblock %}</div>
+<div style="position: absolute; top: 20px; right: 30px;">
+    {% if dark == 'night' %}
+    <img class="hop" id="themeIdentifier" src="img/moon-icon-outline.svg">
+    {% else %}
+    <img class="hop" id="themeIdentifier" src="img/sun-icon.svg">
+    {% endif %}
+</div>
 <div class="container text-center py-3">
-    <p style="font-weight: bold">
-        Made with 🖤 by <a class="light" href="https://frankwhoee.codes" >@frank <img src="img/spacelogo.png"
-                                    style="height: 2vh;border-radius: 3px"><a/>
+    <p class="font-weight-bold day">
+        Made with 🖤 by <a class="light" href="https://frankwhoee.codes">@frank <img src="img/spacelogo.png"
+                                                                                     style="height: 2vh;border-radius: 3px"></a>
     </p>
-    <p>
+    <p class="day">
         Having problems with post_boy? <br><br>
         <a class="button-red" href="https://hackclub.slack.com/archives/DJ98650F8">Ask Frank</a>
     </p>
@@ -37,10 +44,85 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
 <script>
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
     });
+    checkAndTheme()
+    $('.hop').click(function () {
+        var animTimeline = anime.timeline()
+            .add({
+                targets: this,
+                translateY: -50,
+                scale: 0,
+                complete: toggleIcon($(this))
+            })
+            .add({
+                targets: this,
+                translateY: 50,
+                scale: 0,
+                complete: checkAndTheme()
+            })
+            .add({
+                targets: this,
+                translateY: 0,
+                scale: 1
+            });
+    });
+
+    function toggleIcon($elem) {
+        if ($elem.attr('src').includes("img/sun-icon.svg")) {
+            $elem.attr('src', "img/moon-icon-outline.svg");
+        } else {
+            $elem.attr('src', "img/sun-icon.svg");
+        }
+    }
+
+    function checkAndTheme() {
+        console.log("Theme check...")
+        if ($("#themeIdentifier").attr('src').includes("img/sun-icon.svg")) {
+            console.log("Found dark mode. Switching to light mode...")
+            $('.night').each(function () {
+                $(this).addClass("day");
+                $(this).removeClass("night");
+            });
+            $('.logo-main').each(function () {
+                $(this).attr("src", "img/logo.svg")
+            })
+            console.log("Switch complete. Redirecting URL to save dark=false")
+            if (location.href.includes("?dark=true")) {
+                location.href = location.href.replace("dark=true", "dark=false");
+            } else if (!location.href.includes("dark")) {
+                if (location.href.includes("?")) {
+                    location.href = location.href + "&dark=false";
+                } else {
+                    location.href = location.href + "?dark=false";
+                }
+            }
+            console.log("Redirect complete.")
+        } else {
+            console.log("Found light mode. Switching to dark mode...")
+            $('.day').each(function () {
+                $(this).addClass("night");
+                $(this).removeClass("day");
+            });
+            $('.logo-main').each(function () {
+                $(this).attr("src", "img/logo-light.svg")
+            })
+            console.log("Switch complete. Redirecting URL to save dark=true")
+            if (location.href.includes("?dark=false")) {
+                location.href = location.href.replace("dark=false", "dark=true")
+            } else if (!location.href.includes("dark")) {
+                if (location.href.includes("?")) {
+                    location.href = location.href + "&dark=true";
+                } else {
+                    location.href = location.href + "?dark=true";
+                }
+            }
+            console.log("Redirect complete.")
+        }
+    }
 </script>
 </body>
 </html>

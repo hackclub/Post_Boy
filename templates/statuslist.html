@@ -4,9 +4,9 @@
     <img src="img/logo.svg" class="logo-main">
     <br><br>
     {% if len == 1 %}
-    <h1 class="font-weight-bold">Hi, {% if type %}<span class="text-red">{{ type }}</span> {% endif %} {{ name }}. You have <span class="text-red">{{ len }}</span>  pending package.</h1>
+    <h1 class="font-weight-bold day">Hi, {% if type %}<span class="text-red">{{ type }}</span> {% endif %} {{ name }}. You have <span class="text-red">{{ len }}</span>  pending package.</h1>
     {% else %}
-    <h1 class="font-weight-bold">Hi, {% if type %}<span class="text-red">{{ type }}</span> {% endif %} {{ name }}. You have <span class="text-red">{{ len }}</span> pending packages.</h1>
+    <h1 class="font-weight-bold day">Hi, {% if type %}<span class="text-red">{{ type }}</span> {% endif %} {{ name }}. You have <span class="text-red">{{ len }}</span> pending packages.</h1>
     {% endif %}
     <br><br>
     <div class="col">

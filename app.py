@@ -50,8 +50,9 @@ airtable_key = os.getenv('AIRTABLE_KEY')
 
 @app.route("/")
 def index():
+    setTheme(request.args)
     if 'id' not in session:
-        return render_template("index.html")
+        return render_template("index.html", dark='day')
     else:
         return redirect("/user")
 
@@ -81,7 +82,8 @@ def move_completed_packages_down(packages: list):
             packages.remove(package)
             packages.append(package)
 
-def convertLabelNameToArray(label:str):
+
+def convertLabelNameToArray(label: str):
     label_array = []
     if 'sticker' in label.lower():
         # Append sticker label
@@ -99,8 +101,10 @@ def convertLabelNameToArray(label:str):
             label_array.append((label, label.replace(" ", "-")))
     return label_array
 
+
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
+    setTheme(request.args)
     isNew = 'new' in request.args and request.args['new'] == 'true'
     if isNew:
         if not airtable.isLeader(session['id']) and not airtable.is_node_master(session['id']):
@@ -113,14 +117,14 @@ def edit():
         scenario['labels'] = convertLabelNameToArray(scenario['labels'])
         form = recipientForm()
         if form.validate_on_submit():
-                note = form.note.data
-                observer = slack.WebClient(token=auth_token)
-                observer.chat_postMessage(
-                    channel="GNTFDNEF8",
-                    text="<@UNRAW3K7F> test " + type + " <@" + session['id'] + "> " + note
-                )
-                return redirect('/user')
-        return render_template("recipient_edit.html", package=scenario, name=session['name'], form=form)
+            note = form.note.data
+            observer = slack.WebClient(token=auth_token)
+            observer.chat_postMessage(
+                channel="GNTFDNEF8",
+                text="<@UNRAW3K7F> test " + type + " <@" + session['id'] + "> " + note
+            )
+            return redirect('/user')
+        return render_template("recipient_edit.html", package=scenario, name=session['name'], form=form, dark=session['theme'])
 
 
 def login(auth_code):
@@ -137,8 +141,10 @@ def login(auth_code):
     session['id'] = user_slack_id
     session['name'] = user_name
 
+
 @app.route('/user', methods=["GET", "POST"])
 def user():
+    setTheme(request.args)
     if 'code' in request.args:
         if 'id' in session:
             return redirect('/user')
@@ -150,7 +156,7 @@ def user():
     num_of_packages = 0
     type = ''
     if airtable.is_node_master(session['id']):
-        type= 'Node Master'
+        type = 'Node Master'
     elif airtable.isLeader(session['id']):
         type = 'Club Leader'
     packages = airtable.getPackages(session['id'])
@@ -166,11 +172,13 @@ def user():
         package['date_shipped'] = '' if package['date_shipped'] == '' else convertToDateString(package['date_shipped'])
         package['date_arrived'] = '' if package['date_arrived'] == '' else convertToDateString(package['date_arrived'])
 
-    return render_template("statuslist.html", packages=packages, name=session['name'], len=num_of_packages, type=type)
+    return render_template("statuslist.html", packages=packages, name=session['name'], len=num_of_packages, type=type, dark=session['theme'])
+
 
 def convertToDateString(date):
     return datetime.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%fZ').strftime(
         "%b. %d, %Y")
+
 
 @app.route('/logout')
 def logout():
@@ -185,3 +193,8 @@ def getNameFromId(id):
         return observer.users_info(user=id)['user']['real_name']
     except:
         return "No Node Master found."
+
+
+def setTheme(args):
+    if 'dark' in args:
+        session['theme'] = 'night' if args['dark'] == 'true' else 'day'
