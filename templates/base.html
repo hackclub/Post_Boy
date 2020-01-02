@@ -61,14 +61,13 @@
             .add({
                 targets: this,
                 translateY: 50,
-                scale: 0,
-                complete: checkAndTheme()
+                scale: 0
             })
             .add({
                 targets: this,
                 translateY: 0,
                 scale: 1
-            });
+            }).finished.then(checkAndTheme);
     });
 
     function toggleIcon($elem) {
