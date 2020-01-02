@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hack Club | post_boy</title>
+    <title>post_boy – Hack Club</title>
     <meta name="slack-app-id" content="AS3DSU4DV">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -33,6 +33,7 @@
         Having problems with post_boy? <br><br>
         <a class="button-red" href="https://hackclub.slack.com/archives/DJ98650F8">Ask Frank</a>
     </p>
+    <a href="https://github.com/hackclub/Post_Boy"><img class="github-icon" src="img/github-icon.svg"></a>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -79,17 +80,17 @@
     }
 
     function checkAndTheme() {
-        console.log("Theme check...")
         if ($("#themeIdentifier").attr('src').includes("img/sun-icon.svg")) {
-            console.log("Found dark mode. Switching to light mode...")
             $('.night').each(function () {
                 $(this).addClass("day");
                 $(this).removeClass("night");
             });
             $('.logo-main').each(function () {
                 $(this).attr("src", "img/logo.svg")
-            })
-            console.log("Switch complete. Redirecting URL to save dark=false")
+            });
+            $('.github-icon').each(function () {
+                $(this).attr("src", "img/github-icon.svg")
+            });
             if (location.href.includes("?dark=true")) {
                 location.href = location.href.replace("dark=true", "dark=false");
             } else if (!location.href.includes("dark")) {
@@ -99,16 +100,17 @@
                     location.href = location.href + "?dark=false";
                 }
             }
-            console.log("Redirect complete.")
         } else {
-            console.log("Found light mode. Switching to dark mode...")
             $('.day').each(function () {
                 $(this).addClass("night");
                 $(this).removeClass("day");
             });
             $('.logo-main').each(function () {
                 $(this).attr("src", "img/logo-light.svg")
-            })
+            });
+            $('.github-icon').each(function () {
+                $(this).attr("src", "img/github-icon-light.svg")
+            });
             console.log("Switch complete. Redirecting URL to save dark=true")
             if (location.href.includes("?dark=false")) {
                 location.href = location.href.replace("dark=false", "dark=true")
@@ -119,7 +121,6 @@
                     location.href = location.href + "?dark=true";
                 }
             }
-            console.log("Redirect complete.")
         }
     }
 </script>
