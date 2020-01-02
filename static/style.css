@@ -396,3 +396,19 @@ hr {
     -o-transition-property: -o-transform;
     transition-property: transform;
 }
+
+body {
+    overflow: overlay;
+    overflow-x: hidden;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    background: transparent;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #e42d40;
+    border-radius: 10px;
+}
