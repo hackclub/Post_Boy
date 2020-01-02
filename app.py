@@ -198,3 +198,5 @@ def getNameFromId(id):
 def setTheme(args):
     if 'dark' in args:
         session['theme'] = 'night' if args['dark'] == 'true' else 'day'
+    elif 'theme' not in session:
+        session['theme'] = 'day'
