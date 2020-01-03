@@ -1,5 +1,5 @@
 ![Logo](img/logo.svg)
-# Post_Boy
+# post_boy
 GUI to track shipments from Hack Club
 
 ### [packages.hackclub.com](packages.hackclub.com)
@@ -15,6 +15,7 @@ GUI to track shipments from Hack Club
   * Tracking number
   * You name it
  * Has dark mode
+ * Order packages and other cool stuff directly from post_boy!
 
 ## Setting up a development environment
 Dependencies:
