@@ -2,7 +2,7 @@
 # post_boy
 GUI to track shipments from Hack Club
 
-### [packages.hackclub.com](packages.hackclub.com)
+### [packages.hackclub.com](https://packages.hackclub.com)
 
 ## Features
 
