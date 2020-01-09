@@ -50,7 +50,6 @@ airtable_key = os.getenv('AIRTABLE_KEY')
 
 @app.route("/")
 def index():
-    setTheme(request.args)
     if 'id' not in session:
         if 'theme' not in session:
             return render_template("index.html", dark='day')
@@ -107,7 +106,6 @@ def convertLabelNameToArray(label: str):
 
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
-    setTheme(request.args)
     isNew = 'new' in request.args and request.args['new'] == 'true'
     if isNew:
         if not airtable.isLeader(session['id']) and not airtable.is_node_master(session['id']):
@@ -147,7 +145,6 @@ def login(auth_code):
 
 @app.route('/user', methods=["GET", "POST"])
 def user():
-    setTheme(request.args)
     if 'code' in request.args:
         if 'id' in session:
             return redirect('/user')
@@ -155,7 +152,6 @@ def user():
             auth_code = request.args['code']
             login(auth_code)
             return redirect('/user')
-    packages = []
     num_of_packages = 0
     type = ''
     if airtable.is_node_master(session['id']):
@@ -197,9 +193,7 @@ def getNameFromId(id):
     except:
         return "No Node Master found."
 
-
-def setTheme(args):
-    if 'dark' in args:
-        session['theme'] = 'night' if args['dark'] == 'true' else 'day'
-    elif 'theme' not in session:
-        session['theme'] = 'day'
+@app.route("/theme", methods=['POST'])
+def setTheme():
+    session['theme'] = request.get_data().decode("utf-8")
+    return "200"
