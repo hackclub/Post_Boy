@@ -453,8 +453,14 @@ p.night {
     width: 20px
 }
 
-.code{
+p.code.day{
     border-radius: 4px;
     background-color: lightgray;
+    color: hotpink;
+}
+
+p.code.night{
+    border-radius: 4px;
+    background-color: #333333;
     color: hotpink;
 }
