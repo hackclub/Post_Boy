@@ -68,7 +68,7 @@
                 targets: this,
                 translateY: 0,
                 scale: 1
-            }).finished.then(checkAndTheme);
+            }).finished.then(checkAndTheme).then(postTheme($(this)));
     });
 
     function toggleIcon($elem) {
@@ -77,6 +77,21 @@
         } else {
             $elem.attr('src', "img/sun-icon.svg");
         }
+    }
+
+    function postTheme($elem){
+        let data = "";
+        if ($elem.attr('src').includes("img/sun-icon.svg")) {
+            data = "day";
+        } else {
+            data = "night";
+        }
+        fetch("/theme", {
+            method: "POST",
+            body: data
+        }).then(res => {
+            console.log("Theme change complete. Response:", res);
+        });
     }
 
     function checkAndTheme() {
@@ -91,15 +106,6 @@
             $('.github-icon').each(function () {
                 $(this).attr("src", "img/github-icon.svg")
             });
-            if (location.href.includes("?dark=true")) {
-                location.href = location.href.replace("dark=true", "dark=false");
-            } else if (!location.href.includes("dark")) {
-                if (location.href.includes("?")) {
-                    location.href = location.href + "&dark=false";
-                } else {
-                    location.href = location.href + "?dark=false";
-                }
-            }
         } else {
             $('.day').each(function () {
                 $(this).addClass("night");
@@ -112,15 +118,6 @@
                 $(this).attr("src", "img/github-icon-light.svg")
             });
             console.log("Switch complete. Redirecting URL to save dark=true")
-            if (location.href.includes("?dark=false")) {
-                location.href = location.href.replace("dark=false", "dark=true")
-            } else if (!location.href.includes("dark")) {
-                if (location.href.includes("?")) {
-                    location.href = location.href + "&dark=true";
-                } else {
-                    location.href = location.href + "?dark=true";
-                }
-            }
         }
     }
 </script>

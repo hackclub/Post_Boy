@@ -1,5 +1,21 @@
-# Post_Boy
+![Logo](img/logo.svg)
+# post_boy
 GUI to track shipments from Hack Club
+
+### [packages.hackclub.com](https://packages.hackclub.com)
+
+## Features
+
+* Pulls directly from Hack Club's [API2: Electric Boogaloo](https://github.com/hackclub/api2) to get your packages
+* Shows you every single thing you will need to know about a requested package
+  * Contents
+  * Date ordered
+  * Date shipped
+  * Shipping status
+  * Tracking number
+  * You name it
+ * Has dark mode
+ * Order packages and other cool stuff directly from post_boy!
 
 ## Setting up a development environment
 Dependencies:
