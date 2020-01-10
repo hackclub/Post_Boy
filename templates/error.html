@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="height: 73vh;" class="px-5">
+    <div class="row row-center-vertical" style="height: 33%">
+        <div class="container py-5 text-center">
+            <img src="../img/logo.svg" class="logo-main">
+        </div>
+    </div>
+    <div class="row row-center-vertical" style="height: 66%">
+        <h1 class="text-red font-weight-bold">Whoops, something went wrong.</h1>
+        <br>
+        <p class="code px-3 py-2">{{ error }}</p>
+    </div>
+</div>
+{% endblock %}

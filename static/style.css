@@ -452,3 +452,9 @@ p.night {
 .github-icon{
     width: 20px
 }
+
+.code{
+    border-radius: 4px;
+    background-color: lightgray;
+    color: hotpink;
+}

@@ -228,11 +228,11 @@
                     <a href="{{ package.address_change }}" target="_blank" class="button-red">Change your address</a>
                 </div>
                 {% elif package.status == "NAP" %}
-                <h2 class="text-white">Sorry, your package was not approved. :(</h2>
+                <h2 class="text-white">Sorry, your package was not approved. <br>:(</h2>
                 {% elif package.status == "S" %}
                 <h2 class="text-white">Your package has been shipped!</h2>
                 {% elif package.status == "A" %}
-                <h2 class="text-white">We hope you enjoy your package! :)</h2>
+                <h2 class="text-white">We hope you enjoy your package! <br>:)</h2>
                 {% endif %}
             </div>
         </div>

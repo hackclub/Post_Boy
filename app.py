@@ -133,8 +133,10 @@ def login(auth_code):
     # An empty string is a valid token for this request
     client = slack.WebClient(token="")
     # Request the auth tokens from Slack
-    response = client.oauth_access(client_id=client_id, client_secret=client_secret, code=auth_code)
-
+    try:
+        response = client.oauth_access(client_id=client_id, client_secret=client_secret, code=auth_code)
+    except Exception as e:
+        return str(e)
     user_client = slack.WebClient(token=response['access_token'])
     info = user_client.users_identity()
     # info = {'user':{'id':'UJ9864R4N', 'real_name':'Frank Hui'}}
@@ -142,6 +144,7 @@ def login(auth_code):
     user_name = info['user']['name']
     session['id'] = user_slack_id
     session['name'] = user_name
+    return 0
 
 
 @app.route('/user', methods=["GET", "POST"])
@@ -151,8 +154,11 @@ def user():
             return redirect('/user')
         else:
             auth_code = request.args['code']
-            login(auth_code)
-            return redirect('/user')
+            error = login(auth_code)
+            if error != 0:
+                return render_template("error.html", error=error)
+            else:
+                return redirect('/user')
     num_of_packages = 0
     type = ''
     if airtable.is_node_master(session['id']):
