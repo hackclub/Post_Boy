@@ -143,6 +143,7 @@ def login(auth_code):
     user_name = info['user']['name']
     session['id'] = user_slack_id
     session['name'] = user_name
+    session['theme'] = 'day'
 
 
 @app.route('/user', methods=["GET", "POST"])
