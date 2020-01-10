@@ -106,6 +106,7 @@ def convertLabelNameToArray(label: str):
 
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
+    checkSession()
     isNew = 'new' in request.args and request.args['new'] == 'true'
     if isNew:
         if not airtable.isLeader(session['id']) and not airtable.is_node_master(session['id']):
@@ -171,7 +172,7 @@ def user():
         package['date_ordered'] = convertToDateString(package['date_ordered'])
         package['date_shipped'] = '' if package['date_shipped'] == '' else convertToDateString(package['date_shipped'])
         package['date_arrived'] = '' if package['date_arrived'] == '' else convertToDateString(package['date_arrived'])
-
+    checkSession()
     return render_template("statuslist.html", packages=packages, name=session['name'], len=num_of_packages, type=type, dark=session['theme'])
 
 
@@ -199,3 +200,8 @@ def getNameFromId(id):
 def setTheme():
     session['theme'] = request.get_data().decode("utf-8")
     return "200"
+
+def checkSession():
+    if 'theme' not in session: session['theme'] = 'day'
+    if 'id' not in session: return -1
+    if 'name' not in session: return -1
