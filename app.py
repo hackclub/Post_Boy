@@ -181,8 +181,9 @@ def convertToDateString(date):
 
 @app.route('/logout')
 def logout():
-    del session['id']
-    del session['name']
+    if 'id' in session: del session['id']
+    if 'name' in session: del session['name']
+    if 'theme' in session: del session['theme']
     return redirect("/")
 
 
