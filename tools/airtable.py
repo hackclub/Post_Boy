@@ -104,4 +104,5 @@ def isLeader(slack_id):
 
     response = json.loads(requests.get('https://api2.hackclub.com/v0/Operations/People', headers=auth_header,
                                        params=params).content)
+    print(response)
     return len(response) != 0 and 'Clubs' in response[0]['fields'] and len(response[0]['fields']['Clubs']) > 0

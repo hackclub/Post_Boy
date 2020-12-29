@@ -5,6 +5,12 @@ import slack
 import datetime
 from bs4 import BeautifulSoup
 import time
+if os.path.exists("secrets.json"):
+    with open("secrets.json") as f:
+        secrets = json.load(f)
+
+for key in secrets.keys():
+    os.environ[key] = secrets[key]
 import tools.airtable as airtable
 from flask import Flask, request, render_template, send_from_directory, session, flash, redirect
 from flask_wtf import FlaskForm
@@ -34,12 +40,9 @@ class recipientForm(FlaskForm):
     note = StringField('note')
     submit = SubmitField('Submit')
 
-
 app = Flask(__name__)
-if __name__ == '__main__':
-    app.run(debug=True)
 
-app.secret_key = '\xf0"b1\x04\xe0.[?w\x0c(\x94\xcdh\xc1yq\xe3\xaf\xf2\x8f^\xdc'
+app.secret_key = os.getenv('APP_SECRET_KEY')
 
 client_id = os.getenv('CLIENT_ID')
 client_secret = os.getenv('CLIENT_SECRET')
@@ -210,3 +213,6 @@ def checkSession():
     if 'theme' not in session: session['theme'] = 'day'
     if 'id' not in session: return -1
     if 'name' not in session: return -1
+
+if __name__ == '__main__':
+    app.run(debug=True)

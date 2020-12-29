@@ -1,1 +1,4 @@
-export
+secrets.json
+.idea
+venv
+*__pycache__
