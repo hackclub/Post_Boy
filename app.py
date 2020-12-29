@@ -9,8 +9,8 @@ if os.path.exists("secrets.json"):
     with open("secrets.json") as f:
         secrets = json.load(f)
 
-for key in secrets.keys():
-    os.environ[key] = secrets[key]
+    for key in secrets.keys():
+        os.environ[key] = secrets[key]
 import tools.airtable as airtable
 from flask import Flask, request, render_template, send_from_directory, session, flash, redirect
 from flask_wtf import FlaskForm
