@@ -4,7 +4,6 @@ import os
 import time
 
 airtable_key = os.getenv('AIRTABLE_KEY')
-airtable_key  = "keyGR7qwKG954hwmn"
 
 auth_header = {
     'Authorization': 'Bearer ' + airtable_key,
