@@ -55,9 +55,8 @@ airtable_key = os.getenv('AIRTABLE_KEY')
 def index():
     if 'id' not in session:
         if 'theme' not in session:
-            return render_template("index.html", dark='day')
-        else:
-            return render_template("index.html", dark=session['theme'])
+            session["theme"] = "day"
+        return render_template("index.html", dark=session['theme'])
     else:
         return redirect("/user")
 
@@ -95,15 +94,17 @@ def convertLabelNameToArray(label: str):
         label_array.append(("Sticker", "Sticker"))
         if 'box' in label.lower():
             label_array.append(("Box", "Box"))
-            # Append size label
-            label_array.append((label.replace("Sticker Box", ""), label.replace("Sticker Box", "")))
+            # Append size label only if there is a size
+            size = label.replace("Sticker Box", "")
+            if size:
+                label_array.append((size,size))
         else:
             label_array.append(("Envelope", "Envelope"))
     else:
         if 'minecraft' in label.lower():
             label_array.append(("Envelope", "Envelope"))
         else:
-            label_array.append((label, label.replace(" ", "-")))
+            label_array.append((label, ""))
     return label_array
 
 
@@ -133,7 +134,7 @@ def edit():
 
 
 def login(auth_code):
-    # An empty string is a valid token for this request
+    # # An empty string is a valid token for this request
     client = slack.WebClient(token="")
     # Request the auth tokens from Slack
     try:
@@ -147,41 +148,48 @@ def login(auth_code):
     user_name = info['user']['name']
     session['id'] = user_slack_id
     session['name'] = user_name
+
     return 0
 
 
 @app.route('/user', methods=["GET", "POST"])
 def user():
-    if 'code' in request.args:
-        if 'id' in session:
-            return redirect('/user')
-        else:
-            auth_code = request.args['code']
-            error = login(auth_code)
-            if error != 0:
-                return render_template("error.html", error=error)
-            else:
+    if 'id' in session:
+        if 'code' in request.args:
+            if 'id' in session:
                 return redirect('/user')
-    num_of_packages = 0
-    type = ''
-    if airtable.is_node_master(session['id']):
-        type = 'Node Master'
-    elif airtable.isLeader(session['id']):
-        type = 'Club Leader'
-    packages = airtable.getPackages(session['id'])
-    packages.sort(key=sort_by_date_ordered)
-    move_completed_packages_down(packages)
-    for package in packages:
-        package['node_master'] = getNameFromId(package['node_master'])
-        package['contents'] = package['contents'].replace("\n", "<br>")
-        if package['status'] != 'A' and package['status'] != 'NAP':
-            num_of_packages += 1
-        package['labels'] = convertLabelNameToArray(package['labels'])
-        package['date_ordered'] = convertToDateString(package['date_ordered'])
-        package['date_shipped'] = '' if package['date_shipped'] == '' else convertToDateString(package['date_shipped'])
-        package['date_arrived'] = '' if package['date_arrived'] == '' else convertToDateString(package['date_arrived'])
-    checkSession()
-    return render_template("statuslist.html", packages=packages, name=session['name'], len=num_of_packages, type=type, dark=session['theme'])
+            else:
+                auth_code = request.args['code']
+                error = login(auth_code)
+                if error != 0:
+                    return render_template("error.html", error=error)
+                else:
+                    return redirect('/user')
+        num_of_packages = 0
+        type = ''
+        is_node_master = airtable.is_node_master(session['id'])
+        if is_node_master:
+            type = 'Node Master'
+        elif airtable.isLeader(session['id']):
+            type = 'Club Leader'
+        packages = airtable.getPackages(session['id'], is_node_master=is_node_master)
+        packages.sort(key=sort_by_date_ordered)
+        move_completed_packages_down(packages)
+        for package in packages:
+            package['node_master'] = getNameFromId(package['node_master'])
+            package['contents'] = package['contents'].replace("\n", "<br>")
+            if package['status'] != 'A' and package['status'] != 'NAP':
+                num_of_packages += 1
+            package['labels'] = convertLabelNameToArray(package['labels'])
+            package['date_ordered'] = convertToDateString(package['date_ordered'])
+            package['date_shipped'] = '' if package['date_shipped'] == '' else convertToDateString(package['date_shipped'])
+            package['date_arrived'] = '' if package['date_arrived'] == '' else convertToDateString(package['date_arrived'])
+        checkSession()
+        return render_template("statuslist.html", packages=packages, name=session['name'], len=num_of_packages, type=type, dark=session['theme'])
+    else:
+        if 'theme' not in session:
+            session["theme"] = "day"
+        return render_template("notloggedin.html", dark=session['theme'])
 
 
 def convertToDateString(date):

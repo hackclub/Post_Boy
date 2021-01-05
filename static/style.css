@@ -1,3 +1,15 @@
+.label-{
+    background-color: white;
+    border: none;
+    color: black;
+    padding: 2px 13px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none;
+    display: inline-block;
+    border-radius: 50px;
+
+}
 .label-Custom {
     background-color: black;
     border: none;

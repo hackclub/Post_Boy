@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+    <div style="height: 73vh;" class="px-5">
+        <div class="row row-center-vertical" style="height: 33%">
+            <div class="container py-5 text-center">
+                <img src="../img/logo.svg" class="logo-main">
+            </div>
+        </div>
+        <div class="row row-center-vertical" style="height: 66%">
+            <h1 class="text-red font-weight-bold">Ruh roh, looks like you're not logged in!</h1>
+            <br>
+            <a href="https://slack.com/oauth/authorize?client_id=2210535565.887468956471&scope=identity.basic"
+               class="button-red font-large"><img src="../img/Slack_Mark.svg"
+                                                  style="height: 50px; padding-right: 10px">Slack
+                Login</a>
+        </div>
+
+    </div>
+{% endblock %}

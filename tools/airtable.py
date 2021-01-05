@@ -5,33 +5,47 @@ import time
 
 airtable_key = os.getenv('AIRTABLE_KEY')
 
-auth_header = {
-    'Authorization': 'Bearer ' + airtable_key,
-}
-
 
 def getPackages(slack_id, is_node_master=False):
-    params = (
-        ("select",
-         '{"view":"Everything",'
-         '"filterByFormula":"\'<@' + slack_id + '>\' = {Receiver Message Tag}",'
-                                                '"fields":["Unique Index","Scenario Name","Receiver Address",'
-                                                '"Created Time","Receiver Scan Time","Sender Scan Time","Scenario","Sender Message Tag","Tracking URL",'
-                                                '"Notes","Receiver Name","Receiver Message Tag","Status"]}'),
-    )
+    if is_node_master:
+        params = (
+            ("select",
+             '{"view":"Everything",'
+             '"filterByFormula":"\'<@' + slack_id + '>\' = {Sender Message Tag}",'
+                                                    '"fields":["Unique Index","Scenario Name","Receiver Address",'
+                                                    '"Created Time","Receiver Scan Time","Sender Scan Time","Scenario","Sender Message Tag","Tracking URL",'
+                                                    '"Notes","Receiver Name","Receiver Message Tag","Status"]}'),
+            ('authKey', airtable_key),
+        )
 
-    response = requests.get("https://api2.hackclub.com/v0/Operations/Mail%20Missions", headers=auth_header,
-                            params=params)
-    f = open("dev.log", "w")
-    f.write(json.dumps(json.loads(response.content)))
-    f.close()
-    return convertRequestToPackages(response)
+        response = requests.get("https://api2.hackclub.com/v0.1/Operations/Mail%20Missions",
+                                params=params)
+        f = open("dev.log", "w")
+        f.write(json.dumps(json.loads(response.content)))
+        f.close()
+        return convertRequestToPackages(response)
+    else:
+        params = (
+            ("select",
+             '{"view":"Everything",'
+             '"filterByFormula":"\'<@' + slack_id + '>\' = {Receiver Message Tag}",'
+                                                    '"fields":["Unique Index","Scenario Name","Receiver Address",'
+                                                    '"Created Time","Receiver Scan Time","Sender Scan Time","Scenario","Sender Message Tag","Tracking URL",'
+                                                    '"Notes","Receiver Name","Receiver Message Tag","Status"]}'),
+            ('authKey', airtable_key),
+        )
+
+        response = requests.get("https://api2.hackclub.com/v0.1/Operations/Mail%20Missions", 
+                                params=params)
+        f = open("dev.log", "w")
+        f.write(json.dumps(json.loads(response.content)))
+        f.close()
+        return convertRequestToPackages(response)
 
 
 def getMailScenario(name, slack_id=None):
     response = json.loads(requests.get(
-        'http://api2.hackclub.com/v0/Operations/Mail%20Scenarios?select={"maxRecords":1,"filterByFormula":"\'' + name + '\' = {ID}"}',
-        headers=auth_header).content)[0]['fields']
+        'http://api2.hackclub.com/v0.1/Operations/Mail%20Scenarios?authKey='+airtable_key+'&select={"maxRecords":1,"filterByFormula":"\'' + name + '\' = {ID}"}').content)[0]['fields']
     scenario = {}
     scenario['name'] = response['Name']
     scenario['contents'] = response['Contents']
@@ -44,14 +58,13 @@ def getMailScenario(name, slack_id=None):
 def getAddress(id, idType="record_id"):
     if idType == 'record_id':
         response = json.loads(requests.get(
-            'http://api2.hackclub.com/v0/Operations/Addresses?select={"maxRecords":1,"filterByFormula":"\'' + id + '\' = {Record ID}"}',
-            headers=auth_header).content)[0]['fields']
+            'http://api2.hackclub.com/v0.1/Operations/Addresses?authKey='+airtable_key+'&select={"maxRecords":1,"filterByFormula":"\'' + id + '\' = {Record ID}"}'
+            ).content)[0]['fields']
 
         return (response['Formatted Address'], response['Update Form URL'])
     elif idType == 'slack_id':
         response = json.loads(requests.get(
-            'http://api2.hackclub.com/v0/Operations/Addresses?select={"maxRecords":1,"filterByFormula":"\'<@' + id + '>\' = {Sender Message Tag}"}',
-            headers=auth_header).content)[0]['fields']
+            'http://api2.hackclub.com/v0.1/Operations/Addresses?authKey='+airtable_key+'&select={"maxRecords":1,"filterByFormula":"\'<@' + id + '>\' = {Sender Message Tag}"}').content)[0]['fields']
 
 
         return (response['Formatted Address'], response['Update Form URL'])
@@ -59,17 +72,17 @@ def getAddress(id, idType="record_id"):
 
 def getContents(record_id):
     response = json.loads(requests.get(
-        'http://api2.hackclub.com/v0/Operations/Mail%20Scenarios?select={"maxRecords":1,"filterByFormula":"\'' + record_id + '\' = {Record ID}"}',
-        headers=auth_header).content)[0]['fields']
+        'http://api2.hackclub.com/v0.1/Operations/Mail%20Scenarios?authKey='+airtable_key+'&select={"maxRecords":1,"filterByFormula":"\'' + record_id + '\' = {Record ID}"}').content)[0]['fields']
     return response['Contents']
 
 
 def is_node_master(slack_id):
     params = (
         ('select', '{"filterByFormula":"\'' + slack_id + '\' = {Slack ID}"}'),
+        ('authKey', airtable_key),
     )
 
-    response = json.loads(requests.get('https://api2.hackclub.com/v0/Operations/Mail%20Senders', headers=auth_header,
+    response = json.loads(requests.get('https://api2.hackclub.com/v0.1/Operations/Mail%20Senders',
                                        params=params).content)
     return len(response) == 1
 
@@ -100,9 +113,10 @@ def convertRequestToPackages(response):
 def isLeader(slack_id):
     params = (
         ('select', '{"filterByFormula":"\'' + slack_id + '\' = {Slack ID}"}'),
+        ('authKey', airtable_key),
     )
 
-    response = json.loads(requests.get('https://api2.hackclub.com/v0/Operations/People', headers=auth_header,
-                                       params=params).content)
+
+    response = json.loads(requests.get('https://api2.hackclub.com/v0.1/Operations/People',params=params).content)
     print(response)
     return len(response) != 0 and 'Clubs' in response[0]['fields'] and len(response[0]['fields']['Clubs']) > 0
