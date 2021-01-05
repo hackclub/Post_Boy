@@ -154,7 +154,7 @@ def login(auth_code):
 
 @app.route('/user', methods=["GET", "POST"])
 def user():
-    if 'id' in session:
+    if 'id' in session or 'code' in request.args:
         if 'code' in request.args:
             if 'id' in session:
                 return redirect('/user')
